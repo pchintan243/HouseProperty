@@ -1,0 +1,44 @@
+[
+    {
+        "Id": 1,
+        "Name": "Birla House",
+        "Type": "Home",
+        "Price": 12000
+    },
+    {
+        "Id": 2,
+        "Name": "Sunrise",
+        "Type": "Apartment",
+        "Price": 15000
+    },
+    {
+        "Id": 3,
+        "Name": "Greenwood Villa",
+        "Type": "Villa",
+        "Price": 25000
+    },
+    {
+        "Id": 4,
+        "Name": "Lakeview Cottage",
+        "Type": "Cottage",
+        "Price": 18000
+    },
+    {
+        "Id": 5,
+        "Name": "Mountain Retreat",
+        "Type": "Chalet",
+        "Price": 22000
+    },
+    {
+        "Id": 6,
+        "Name": "Oceanfront Condo",
+        "Type": "Condo",
+        "Price": 20000
+    },
+    {
+        "Id": 7,
+        "Name": "Riverside Cabin",
+        "Type": "Cabin",
+        "Price": 16000
+    }
+]
