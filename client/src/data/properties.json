@@ -3,42 +3,56 @@
         "Id": 1,
         "Name": "Birla House",
         "Type": "Home",
-        "Price": 12000
+        "Price": 12000,
+        "SellRent": 2,
+        "Image": "pic1.jpg"
     },
     {
         "Id": 2,
         "Name": "Sunrise",
         "Type": "Apartment",
-        "Price": 15000
+        "Price": 15000,
+        "SellRent": 1,
+        "Image": "pic2.webp"
     },
     {
         "Id": 3,
         "Name": "Greenwood Villa",
         "Type": "Villa",
-        "Price": 25000
+        "Price": 25000,
+        "SellRent": 2,
+        "Image": "pic3.jpeg"
     },
     {
         "Id": 4,
         "Name": "Lakeview Cottage",
         "Type": "Cottage",
-        "Price": 18000
+        "Price": 18000,
+        "SellRent": 1,
+        "Image": "pic4.jpg"
     },
     {
         "Id": 5,
         "Name": "Mountain Retreat",
         "Type": "Chalet",
-        "Price": 22000
+        "Price": 22000,
+        "SellRent": 1,
+        "Image": "pic5.jpeg"
     },
     {
         "Id": 6,
         "Name": "Oceanfront Condo",
         "Type": "Condo",
-        "Price": 20000
+        "Price": 20000,
+        "SellRent": 2,
+        "Image": "pic6.webp"
     },
     {
         "Id": 7,
         "Name": "Riverside Cabin",
         "Type": "Cabin",
-        "Price": 16000
+        "Price": 16000,
+        "SellRent": 1,
+        "Image": "pic7.jpeg"
     }
 ]
