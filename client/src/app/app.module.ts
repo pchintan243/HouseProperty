@@ -24,7 +24,9 @@ const appRoutes: Routes = [
     AppComponent,
     PropertyCardComponent,
     PropertyListComponent,
-    NavBarComponent
+    NavBarComponent,
+    AddPropertyComponent,
+    PropertyDetailComponent
   ],
   imports: [
     BrowserModule,
