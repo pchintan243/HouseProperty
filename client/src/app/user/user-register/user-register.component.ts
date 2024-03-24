@@ -1,5 +1,6 @@
 import { Component, OnInit } from '@angular/core';
 import { AbstractControl, FormControl, FormGroup, ValidationErrors, Validators } from '@angular/forms';
+import { ToastrService } from 'ngx-toastr';
 import { User } from 'src/app/model/user';
 import { UserService } from 'src/app/services/user.service';
 
@@ -14,7 +15,7 @@ export class UserRegisterComponent implements OnInit {
 	user!: User;
 	isSubmit: boolean = false;
 
-	constructor(private userService: UserService) { }
+	constructor(private userService: UserService, private toast: ToastrService) { }
 
 	ngOnInit(): void {
 		this.registrationForm = new FormGroup<any>({
@@ -52,6 +53,7 @@ export class UserRegisterComponent implements OnInit {
 			this.userService.addUser(this.userData());
 			this.registrationForm.reset();
 			this.isSubmit = false;
+			this.toast.success('User added successfully');
 		}
 	}
 
