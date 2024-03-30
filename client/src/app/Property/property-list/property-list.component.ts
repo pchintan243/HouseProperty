@@ -1,7 +1,7 @@
 import { ActivatedRoute } from '@angular/router';
-import { IProperty } from '../IProperty.interface';
 import { HousingService } from './../../services/housing.service';
 import { Component, OnInit } from '@angular/core';
+import { IPropertyBase } from 'src/app/model/ipropertybase';
 
 @Component({
 	selector: 'app-property-list',
@@ -11,7 +11,7 @@ import { Component, OnInit } from '@angular/core';
 export class PropertyListComponent implements OnInit {
 	// SellRent value 1 means property is for buy & 2 for rent
 	SellRent: number = 1;
-	properties: Array<IProperty> | undefined;
+	properties: Array<IPropertyBase> | undefined;
 
 	constructor(private route: ActivatedRoute, private housingService: HousingService) { }
 
