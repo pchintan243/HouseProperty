@@ -15,6 +15,9 @@ import { UserLoginComponent } from './user/user-login/user-login.component';
 import { UserRegisterComponent } from './user/user-register/user-register.component';
 import { ToastrModule } from 'ngx-toastr';
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
+import { ButtonsModule } from 'ngx-bootstrap/buttons';
+import { BsDatepickerModule } from 'ngx-bootstrap/datepicker';
+import { TabsModule } from 'ngx-bootstrap/tabs';
 import { CommonModule } from '@angular/common';
 
 const appRoutes: Routes = [
@@ -48,7 +51,10 @@ const appRoutes: Routes = [
     RouterModule.forRoot(appRoutes),
     BrowserAnimationsModule,
     ToastrModule.forRoot(),
-    BsDropdownModule
+    BsDropdownModule,
+    TabsModule.forRoot(),
+    BsDatepickerModule.forRoot(),
+    ButtonsModule.forRoot()
   ],
   providers: [],
   bootstrap: [AppComponent]
