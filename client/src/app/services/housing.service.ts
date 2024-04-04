@@ -12,7 +12,15 @@ export class HousingService {
 
 	constructor(private http: HttpClient) { }
 
-	getAllProperties(SellRent: number): Observable<IPropertyBase[]> {
+	getProperty(id: number) {
+		return this.getAllProperties().pipe(
+			map(propertiesArray => {
+				return propertiesArray.find(p => p.Id === id);
+			})
+		);
+	}
+
+	getAllProperties(SellRent?: number): Observable<IPropertyBase[]> {
 		return this.http.get('data/properties.json').pipe(
 			map((data: any) => {
 				const propertiesList: Array<IPropertyBase> = [];
@@ -20,13 +28,23 @@ export class HousingService {
 
 				if (localProperties) {
 					for (const id in localProperties) {
-						if (localProperties.hasOwnProperty(id) && localProperties[id].SellRent === SellRent) {
+						if (SellRent) {
+							if (localProperties.hasOwnProperty(id) && localProperties[id].SellRent === SellRent) {
+								propertiesList.push(localProperties[id]);
+							}
+						}
+						else {
 							propertiesList.push(localProperties[id]);
 						}
 					}
 				}
 				for (const id in data) {
-					if (data.hasOwnProperty(id) && data[id].SellRent === SellRent) {
+					if (SellRent) {
+						if (data.hasOwnProperty(id) && data[id].SellRent === SellRent) {
+							propertiesList.push(data[id]);
+						}
+					}
+					else {
 						propertiesList.push(data[id]);
 					}
 				}
