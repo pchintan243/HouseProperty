@@ -13,8 +13,13 @@ export class PropertyDetailComponent implements OnInit {
 
     ngOnInit() {
         // It return strings so we have to convert into int when we want to use that
-        // one more wat to convert string to int using + instead of Number()
-        this.propertyId = this.route.snapshot.params['id']
+        // one more way to convert string to int using + instead of Number()
+        this.propertyId = +this.route.snapshot.params['id'];
+        this.route.params.subscribe(
+            (params) => {
+                this.propertyId = +params['id'];
+            }
+        );
     }
     onSelectNext() {
         // convert string to number
