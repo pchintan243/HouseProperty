@@ -1,0 +1,34 @@
+.main-div {
+    margin-bottom: 15px;
+}
+
+.filter-icon {
+    /* font-size: 110%; */
+    background-color: rgb(20, 255, 20);
+    border-radius: 5px;
+    border: 1px solid green;
+    /* padding: ; */
+    margin-right: 5px;
+}
+
+.clear-icon {
+    border-radius: 5px;
+    border: 1px solid red;
+    background-color: rgb(255, 61, 61);
+    margin-right: 29px;
+}
+
+.filter-icon:hover {
+    background-color: rgb(4, 250, 4);
+}
+
+.clear-icon:hover {
+    background-color: rgb(255, 0, 0);
+}
+
+.filter-button {
+    border-radius: 5px;
+    border: 1px solid blue;
+    background-color: rgb(80, 80, 244);
+    margin-left: 5px;
+}

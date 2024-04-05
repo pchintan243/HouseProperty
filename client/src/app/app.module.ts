@@ -23,6 +23,8 @@ import { HousingService } from './services/housing.service';
 import { UserService } from './services/user.service';
 import { PropertyDetailResolverService } from './Property/property-detail/property-detail-resolver.service';
 import { NgxGalleryModule } from '@kolkov/ngx-gallery';
+import { FilterPipe } from './pipes/filter.pipe';
+import { SortPipe } from './pipes/sort.pipe';
 
 const appRoutes: Routes = [
   { path: '', component: PropertyListComponent },
@@ -43,7 +45,9 @@ const appRoutes: Routes = [
     AddPropertyComponent,
     PropertyDetailComponent,
     UserLoginComponent,
-    UserRegisterComponent
+    UserRegisterComponent,
+    FilterPipe,
+    SortPipe
   ],
   imports: [
     CommonModule,

@@ -11,8 +11,13 @@ import { IPropertyBase } from 'src/app/model/ipropertybase';
 export class PropertyListComponent implements OnInit {
 	// SellRent value 1 means property is for buy & 2 for rent
 	SellRent: number = 1;
-	properties: Array<IPropertyBase> | undefined;
+	properties?: Array<IPropertyBase>;
+	Today = new Date();
+	City = '';
+	SortByParam = '';
+	SortDirection = 'asc';
 
+	SearchCity = '';
 	constructor(private route: ActivatedRoute, private housingService: HousingService) { }
 
 	ngOnInit(): void {
@@ -25,5 +30,23 @@ export class PropertyListComponent implements OnInit {
 				console.log(error);
 			}
 		);
+	}
+
+	onCityFilter() {
+		this.SearchCity = this.City;
+	}
+	
+	onFilterClear() {
+		this.SearchCity = '';
+		this.City = '';
+	}
+
+	onSortDirection() {
+		if (this.SortDirection === 'asc') {
+			this.SortDirection = 'desc';
+		}
+		else {
+			this.SortDirection = 'asc';
+		}
 	}
 }
