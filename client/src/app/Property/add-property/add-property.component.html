@@ -156,7 +156,7 @@
                                 <div class="form-group col-12">
                                     <div class="form-group col-12">
                                         <button type="button" class="btn btn-danger btn-block m-2"
-                                            (click)="selectTab(1, AddressInfo.valid)">Back</button>
+                                            (click)="selectTab(1, AddressInfo.valid || AddressInfo.invalid)">Back</button>
 
                                         <button type="button" class="btn btn-primary btn-block"
                                             (click)="selectTab(3, AddressInfo.valid)">Next</button>
@@ -225,7 +225,7 @@
 
                                 <div class="form-group col-12">
                                     <button type="button" class="btn btn-danger btn-block m-2"
-                                        (click)="selectTab(2, OtherInfo.valid)">Back</button>
+                                        (click)="selectTab(2, OtherInfo.valid || OtherInfo.invalid)">Back</button>
 
                                     <button type="button" class="btn btn-primary btn-block"
                                         (click)="selectTab(4, OtherInfo.valid)">Next</button>
