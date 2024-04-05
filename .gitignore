@@ -2,3 +2,6 @@
 client/.firebaserc
 client/.firebase/hosting.ZGlzdFxjbGllbnQ.cache
 client/firebase.json
+.vs/
+bin/
+obj/
