@@ -2,12 +2,13 @@
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.EntityFrameworkCore;
 using server.Data;
 using server.Models;
 
 namespace server.Controllers
 {
-    [Route("api/[controller]")]
+    [Route("api/[controller]/[action]")]
     [ApiController]
     public class CityController : ControllerBase
     {
@@ -17,11 +18,23 @@ namespace server.Controllers
         {
             _context = context;
         }
+
+        /// <summary>
+        /// Get All the cities
+        /// </summary>
+        /// <returns></returns>
         [HttpGet]
-        public IActionResult GetCities()
+        public async Task<IActionResult> GetCities()
         {
-            return Ok(_context.Cities.ToList());
+            List<AppUser> listOfCities = await _context.Cities.ToListAsync();
+            return Ok(listOfCities);
         }
+
+        /// <summary>
+        /// Add a new city
+        /// </summary>
+        /// <param name="city"></param>
+        /// <returns></returns>
         [HttpPost]
         public async Task<IActionResult> AddCity([FromBody] City city)
         {
