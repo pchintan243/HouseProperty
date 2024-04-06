@@ -1,6 +1,7 @@
 ﻿using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 using server.Data;
+using server.Dtos;
 using server.Interfaces;
 using server.Models;
 
@@ -27,7 +28,7 @@ namespace server.Controllers
         public async Task<IActionResult> GetCities()
         {
             var listOfCities = await _uow.CityRepository.GetCitiesAsync();
-            return Ok(listOfCities);
+            return Ok(listOfCities.Reverse());
         }
 
         /// <summary>
@@ -36,14 +37,15 @@ namespace server.Controllers
         /// <param name="city"></param>
         /// <returns></returns>
         [HttpPost]
-        public async Task<IActionResult> AddCity([FromBody] City city)
+        public async Task<IActionResult> AddCity([FromBody] CityDto cityDto)
         {
             var data = new AppUser()
             {
-                CityName = city.CityName
+                CityName = cityDto.CityName,
+                LastUpdatedBy = cityDto.LastUpdatedBy
             };
             var listOfCities = await _context.Cities.Select(x => x.CityName).ToListAsync();
-            if (city.CityName != null && !listOfCities.Contains(city.CityName.ToLower()))
+            if (cityDto.CityName != null && !listOfCities.Contains(cityDto.CityName.ToLower()))
             {
                 _uow.CityRepository.AddCity(data);
                 await _uow.SaveAsync();
