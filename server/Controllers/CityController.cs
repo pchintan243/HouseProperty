@@ -1,4 +1,5 @@
-﻿using Microsoft.AspNetCore.Mvc;
+﻿using AutoMapper;
+using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 using server.Data;
 using server.Dtos;
@@ -13,11 +14,13 @@ namespace server.Controllers
     {
         private readonly DataContext _context;
         private readonly IUnitOfWork _uow;
+        private readonly IMapper _mapper;
 
-        public CityController(DataContext context, IUnitOfWork uow)
+        public CityController(DataContext context, IUnitOfWork uow, IMapper mapper)
         {
             _context = context;
             _uow = uow;
+            _mapper = mapper;
         }
 
         /// <summary>
