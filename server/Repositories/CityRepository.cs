@@ -33,10 +33,5 @@ namespace server.Repositories
         {
             return await _context.Cities.ToListAsync();
         }
-
-        public async Task<bool> SaveAsync()
-        {
-            return await _context.SaveChangesAsync() > 0;
-        }
     }
 }

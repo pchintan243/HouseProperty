@@ -1,7 +1,4 @@
-﻿using System.Collections;
-using Microsoft.AspNetCore.Http;
-using Microsoft.AspNetCore.Identity;
-using Microsoft.AspNetCore.Mvc;
+﻿using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 using server.Data;
 using server.Interfaces;
@@ -14,12 +11,12 @@ namespace server.Controllers
     public class CityController : ControllerBase
     {
         private readonly DataContext _context;
-        private readonly ICityRepository _cityRepository;
+        private readonly IUnitOfWork _uow;
 
-        public CityController(DataContext context, ICityRepository cityRepository)
+        public CityController(DataContext context, IUnitOfWork uow)
         {
             _context = context;
-            _cityRepository = cityRepository;
+            _uow = uow;
         }
 
         /// <summary>
@@ -28,8 +25,8 @@ namespace server.Controllers
         /// <returns></returns>
         [HttpGet]
         public async Task<IActionResult> GetCities()
-        {   
-            var listOfCities = await _cityRepository.GetCitiesAsync();
+        {
+            var listOfCities = await _uow.CityRepository.GetCitiesAsync();
             return Ok(listOfCities);
         }
 
@@ -48,8 +45,8 @@ namespace server.Controllers
             var listOfCities = await _context.Cities.Select(x => x.CityName).ToListAsync();
             if (city.CityName != null && !listOfCities.Contains(city.CityName.ToLower()))
             {
-                _cityRepository.AddCity(data);
-                await _cityRepository.SaveAsync();
+                _uow.CityRepository.AddCity(data);
+                await _uow.SaveAsync();
                 return Ok(data);
             }
             return BadRequest("City was already added");
@@ -65,8 +62,8 @@ namespace server.Controllers
             var city = await _context.Cities.FindAsync(id);
             if (city != null)
             {
-                _cityRepository.DeleteCity(id);
-                await _cityRepository.SaveAsync();
+                _uow.CityRepository.DeleteCity(id);
+                await _uow.SaveAsync();
                 return Ok("City Deleted successfully");
             }
             return BadRequest("City with given id is Not Found");

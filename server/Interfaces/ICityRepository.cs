@@ -8,6 +8,5 @@ namespace server.Interfaces
 
         void AddCity(AppUser city);
         void DeleteCity(int cityId);
-        Task<bool> SaveAsync();
     }
 }
