@@ -42,9 +42,31 @@ namespace server.Controllers
             {
                 CityName = city.CityName
             };
-            await _context.Cities.AddAsync(data);
-            await _context.SaveChangesAsync();
-            return Ok(data);
+            var listOfCities = await _context.Cities.Select(x => x.CityName).ToListAsync();
+            if (city.CityName != null && !listOfCities.Contains(city.CityName.ToLower()))
+            {
+                await _context.Cities.AddAsync(data);
+                await _context.SaveChangesAsync();
+                return Ok(data);
+            }
+            return BadRequest("City was already added");
+        }
+
+        /// <summary>
+        /// Delete Particular City 
+        /// </summary>
+        /// <returns></returns>
+        [HttpDelete]
+        public async Task<IActionResult> DeleteCity(int id)
+        {
+            var city = await _context.Cities.FindAsync(id);
+            if (city != null)
+            {
+                _context.Cities.Remove(city);
+                await _context.SaveChangesAsync();
+                return Ok("City Deleted successfully");
+            }
+            return BadRequest("City with given id is Not Found");
         }
     }
 }
