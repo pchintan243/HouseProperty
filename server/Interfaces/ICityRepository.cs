@@ -1,3 +1,4 @@
+using Microsoft.AspNetCore.Mvc;
 using server.Models;
 
 namespace server.Interfaces
@@ -6,7 +7,8 @@ namespace server.Interfaces
     {
         Task<IEnumerable<AppUser>> GetCitiesAsync();
 
-        void AddCity(AppUser city);
+        void AddCity(AppUser appUser);
         void DeleteCity(int cityId);
+        Task<AppUser> GetCityByIdAsync(int cityId);
     }
 }
