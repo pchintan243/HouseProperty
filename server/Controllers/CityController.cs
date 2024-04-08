@@ -8,9 +8,7 @@ using server.Models;
 
 namespace server.Controllers
 {
-    [Route("api/[controller]/[action]")]
-    [ApiController]
-    public class CityController : ControllerBase
+    public class CityController : BaseController
     {
         private readonly DataContext _context;
         private readonly IUnitOfWork _uow;

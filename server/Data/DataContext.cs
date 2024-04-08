@@ -10,5 +10,6 @@ namespace server.Data
 
         }
         public DbSet<AppUser> Cities { get; set; }
+        public DbSet<User> Users { get; set; }
     }
 }
