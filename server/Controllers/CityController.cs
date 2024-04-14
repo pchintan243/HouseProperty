@@ -1,4 +1,5 @@
 ﻿using AutoMapper;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 using server.Data;
@@ -8,6 +9,7 @@ using server.Models;
 
 namespace server.Controllers
 {
+    [Authorize]
     public class CityController : BaseController
     {
         private readonly DataContext _context;
