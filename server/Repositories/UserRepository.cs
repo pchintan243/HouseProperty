@@ -1,6 +1,8 @@
 using System.IdentityModel.Tokens.Jwt;
 using System.Security.Claims;
+using System.Security.Cryptography;
 using System.Text;
+using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.IdentityModel.Tokens;
 using server.Data;
@@ -22,13 +24,30 @@ namespace server.Repositories
         }
         public async Task<User> Login(UserDto userDto)
         {
-            var data = await _context.Users.SingleOrDefaultAsync(x => x.UserName == userDto.UserName && x.Password == userDto.Password);
-            if (data != null)
+            var data = await _context.Users.SingleOrDefaultAsync(x => x.UserName == userDto.UserName);
+            if (data == null)
             {
-                data.Token = CreateJWT(data);
-                return data;
+                return null;
             }
-            return null;
+            data.Token = CreateJWT(data);
+
+            if (!PasswordMatchHash(userDto.Password, data.PasswordHash, data.PasswordKey))
+                return null;
+            return data;
+        }
+
+        private bool PasswordMatchHash(string password, byte[] passwordHash, byte[] passwordKey)
+        {
+            using (var hmac = new HMACSHA512(passwordKey))
+            {
+                var HashPassword = hmac.ComputeHash(Encoding.UTF8.GetBytes(password));
+                for (int i = 0; i < HashPassword.Length; i++)
+                {
+                    if (HashPassword[i] != passwordHash[i])
+                        return false;
+                }
+                return true;
+            }
         }
 
         public List<User> GetAllUsers()
@@ -40,18 +59,23 @@ namespace server.Repositories
 
         public async Task<User> RegisterUser(UserDto userDto)
         {
-            var data = new User()
+            byte[] passwordHash, passwordKey;
+
+            using (var hmac = new HMACSHA512())
+            {
+                passwordKey = hmac.Key;
+                passwordHash = hmac.ComputeHash(Encoding.UTF8.GetBytes(userDto.Password));
+            }
+
+            var data = new User
             {
                 UserName = userDto.UserName,
-                Password = userDto.Password,
+                PasswordHash = passwordHash,
+                PasswordKey = passwordKey
             };
 
-            // if (_context.Users.Where(x => x.UserName.ToLower() == userDto.UserName.ToLower()).Any())
-            // {
-            //     return null;
-            // }
-
             _context.Users.Add(data);
+
             return data;
         }
 
@@ -82,6 +106,11 @@ namespace server.Repositories
 
             return tokenHandler.WriteToken(token);
 
+        }
+
+        public async Task<bool> UserAlreadyExists(string userName)
+        {
+            return await _context.Users.AnyAsync(x => x.UserName == userName);
         }
     }
 }

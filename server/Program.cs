@@ -18,6 +18,7 @@ builder.Services.AddAutoMapper(typeof(AutoMapperProfile).Assembly);
 
 builder.Services.AddScoped<IUnitOfWork, UnitOfWork>();
 
+
 var secretKey = builder.Configuration.GetSection("AppSettings:Key").Value;
 var key = new SymmetricSecurityKey(Encoding.UTF8.GetBytes(secretKey));
 
@@ -29,7 +30,7 @@ builder.Services.AddAuthentication(JwtBearerDefaults.AuthenticationScheme)
             ValidateIssuerSigningKey = true,
             ValidateIssuer = false,
             ValidateAudience = false,
-            IssuerSigningKey = key
+            // IssuerSigningKey = key
         };
     })
 ;

@@ -5,3 +5,4 @@ client/firebase.json
 .vs/
 bin/
 obj/
+.vscode/

@@ -16,11 +16,15 @@ namespace server.Controllers
         [HttpPost]
         public async Task<IActionResult> Login([FromBody] UserDto userDto)
         {
+            if (userDto == null)
+            {
+                return BadRequest("User not found");
+            }
             var data = await _uow.UserRepository.Login(userDto);
 
             if (data != null)
             {
-                return Ok(data);
+                return Ok("Bearer " + data.Token);
             }
             return BadRequest("Credentials are not valid");
         }
@@ -28,6 +32,13 @@ namespace server.Controllers
         [HttpPost]
         public async Task<IActionResult> Register([FromBody] UserDto userDto)
         {
+            var isExist = await _uow.UserRepository.UserAlreadyExists(userDto.UserName);
+
+            if (isExist)
+            {
+                return BadRequest("User already exists");
+            }
+
             var data = await _uow.UserRepository.RegisterUser(userDto);
 
             await _uow.SaveAsync();
