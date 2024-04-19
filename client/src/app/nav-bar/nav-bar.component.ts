@@ -36,7 +36,7 @@ export class NavBarComponent implements OnInit {
     this.toastr.success('User log out successfully');
     // Timeout for toaster will be not displayed if we directly logout. It logout immediately that's why toaster will not display
     setTimeout(() => {
-      this.router.navigate(['/user/login']);
+      this.router.navigate(['/api/account/login']);
     }, 1000);
     return false;
   }

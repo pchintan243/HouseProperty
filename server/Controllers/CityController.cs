@@ -42,7 +42,7 @@ namespace server.Controllers
         public async Task<IActionResult> GetCityCount()
         {
             // var listOfCities = _uow.CityRepository.GetCitiesAsync();
-            IEnumerable<AppUser> listOfCities = await _uow.CityRepository.GetCitiesAsync();
+            IEnumerable<City> listOfCities = await _uow.CityRepository.GetCitiesAsync();
             int cityCount = listOfCities.Count();
 
             return Ok(new { Count = cityCount });
@@ -56,15 +56,15 @@ namespace server.Controllers
         [HttpPost]
         public async Task<IActionResult> AddCity([FromBody] CityDto cityDto)
         {
-            var appUser = new AppUser();
+            var city = new City();
             // var data = new AppUser()
             // {
             //     CityName = cityDto.CityName,
             //     LastUpdatedBy = cityDto.LastUpdatedBy
             // };
-            var data = _mapper.Map(cityDto, appUser);
+            var data = _mapper.Map(cityDto, city);
 
-            var listOfCities = await _context.Cities.Select(x => x.CityName).ToListAsync();
+            var listOfCities = await _context.Cities.Select(x => x.Name).ToListAsync();
             if (cityDto.CityName != null && !listOfCities.Contains(cityDto.CityName.ToLower()))
             {
                 _uow.CityRepository.AddCity(data);
@@ -84,7 +84,7 @@ namespace server.Controllers
         {
             var city = await _uow.CityRepository.GetCityByIdAsync(cityId);
 
-            var listOfCities = await _context.Cities.Select(x => x.CityName).ToListAsync();
+            var listOfCities = await _context.Cities.Select(x => x.Name).ToListAsync();
 
             if (city != null)
             {

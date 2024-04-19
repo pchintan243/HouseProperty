@@ -31,8 +31,8 @@ const appRoutes: Routes = [
   { path: 'add-property', component: AddPropertyComponent },
   { path: 'rent-property', component: PropertyListComponent },
   { path: 'property-detail/:id', component: PropertyDetailComponent, resolve: { prp: PropertyDetailResolverService } },
-  { path: 'user/register', component: UserRegisterComponent },
-  { path: 'user/login', component: UserLoginComponent },
+  { path: 'api/account/register', component: UserRegisterComponent },
+  { path: 'api/account/login', component: UserLoginComponent },
   { path: '**', component: PropertyListComponent },
 ]
 

@@ -5,10 +5,10 @@ namespace server.Interfaces
 {
     public interface ICityRepository
     {
-        Task<IEnumerable<AppUser>> GetCitiesAsync();
+        Task<IEnumerable<City>> GetCitiesAsync();
 
-        void AddCity(AppUser appUser);
+        void AddCity(City city);
         void DeleteCity(int cityId);
-        Task<AppUser> GetCityByIdAsync(int cityId);
+        Task<City> GetCityByIdAsync(int cityId);
     }
 }

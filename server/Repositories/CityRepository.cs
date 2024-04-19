@@ -22,7 +22,7 @@ namespace server.Repositories
         /// Create a city
         /// </summary>
         /// <param name="city"></param>
-        public void AddCity(AppUser city)
+        public void AddCity(City city)
         {
             _context.Cities.Add(city);
         }
@@ -44,7 +44,7 @@ namespace server.Repositories
         /// Get All the cities
         /// </summary>
         /// <returns></returns>
-        public async Task<IEnumerable<AppUser>> GetCitiesAsync()
+        public async Task<IEnumerable<City>> GetCitiesAsync()
         {
             return await _context.Cities.ToListAsync();
         }
@@ -54,7 +54,7 @@ namespace server.Repositories
         /// </summary>
         /// <param name="cityId"></param>
         /// <returns></returns>
-        public async Task<AppUser> GetCityByIdAsync(int cityId)
+        public async Task<City> GetCityByIdAsync(int cityId)
         {
             var city = await _context.Cities.FindAsync(cityId);
             if (city != null)
