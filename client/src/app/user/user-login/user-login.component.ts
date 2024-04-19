@@ -22,8 +22,6 @@ export class UserLoginComponent {
         localStorage.setItem('UserName', res.userName);
         this.toastr.success("User Logged in successfully");
         this.router.navigate(['/']);
-      }, error => {
-        this.toastr.error(error.error);
       }
     );
   }

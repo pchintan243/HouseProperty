@@ -1,5 +1,6 @@
 using Microsoft.AspNetCore.Mvc;
 using server.Dtos;
+using server.Errors;
 using server.Interfaces;
 
 namespace server.Controllers
@@ -16,9 +17,13 @@ namespace server.Controllers
         [HttpPost]
         public async Task<IActionResult> Login([FromBody] LoginDto loginDto)
         {
+            ApiError apiError = new ApiError();
             if (loginDto == null)
             {
-                return BadRequest("User not found");
+                apiError.ErrorCode = Unauthorized().StatusCode;
+                apiError.ErrorMessage = "User not found";
+                apiError.ErrorDetails = "This error appears when provided user id or password is incorrect";
+                return Unauthorized(apiError);
             }
             var data = await _uow.UserRepository.Login(loginDto);
 
@@ -32,10 +37,13 @@ namespace server.Controllers
         [HttpPost]
         public async Task<IActionResult> Register([FromBody] UserDto userDto)
         {
+            ApiError apiError = new ApiError();
             var isExist = await _uow.UserRepository.UserAlreadyExists(userDto.Email);
 
             if (isExist)
             {
+                apiError.ErrorCode = BadRequest().StatusCode;
+                apiError.ErrorMessage = "User already exists";
                 return BadRequest("User already exists");
             }
 

@@ -6,3 +6,4 @@ client/firebase.json
 bin/
 obj/
 .vscode/
+.config/dotnet-tools.json

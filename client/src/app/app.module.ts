@@ -7,7 +7,7 @@ import { PropertyCardComponent } from './Property/property-card/property-card.co
 import { PropertyListComponent } from './Property/property-list/property-list.component';
 import { NavBarComponent } from './nav-bar/nav-bar.component';
 import { BsDropdownModule } from 'ngx-bootstrap/dropdown';
-import { HttpClientModule } from '@angular/common/http';
+import { HTTP_INTERCEPTORS, HttpClientModule } from '@angular/common/http';
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { AddPropertyComponent } from './Property/add-property/add-property.component';
 import { PropertyDetailComponent } from './Property/property-detail/property-detail.component';
@@ -24,6 +24,7 @@ import { PropertyDetailResolverService } from './Property/property-detail/proper
 import { NgxGalleryModule } from '@kolkov/ngx-gallery';
 import { FilterPipe } from './pipes/filter.pipe';
 import { SortPipe } from './pipes/sort.pipe';
+import { HttperrorInterceptorService } from './services/httperror-interceptor.service';
 
 const appRoutes: Routes = [
   { path: '', component: PropertyListComponent },
@@ -62,9 +63,14 @@ const appRoutes: Routes = [
     TabsModule.forRoot(),
     BsDatepickerModule.forRoot(),
     ButtonsModule.forRoot(),
-    NgxGalleryModule    
+    NgxGalleryModule
   ],
   providers: [
+    {
+      provide: HTTP_INTERCEPTORS,
+      useClass: HttperrorInterceptorService,
+      multi: true
+    },
     HousingService,
     ToastrService,
     PropertyDetailResolverService

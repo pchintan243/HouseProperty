@@ -56,8 +56,6 @@ export class UserRegisterComponent implements OnInit {
 				this.isSubmit = false;
 				this.toastr.success("User Registered successfully");
 				this.router.navigate(['/user/login']);
-			}, error => {
-				this.toastr.error(error.error);
 			});
 		}
 	}
