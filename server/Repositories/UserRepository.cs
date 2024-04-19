@@ -22,16 +22,16 @@ namespace server.Repositories
             _context = context;
             _configuration = configuration;
         }
-        public async Task<User> Login(UserDto userDto)
+        public async Task<User> Login(LoginDto loginDto)
         {
-            var data = await _context.Users.SingleOrDefaultAsync(x => x.UserName == userDto.UserName);
+            var data = await _context.Users.SingleOrDefaultAsync(x => x.Email == loginDto.Email);
             if (data == null)
             {
                 return null;
             }
             data.Token = CreateJWT(data);
 
-            if (!PasswordMatchHash(userDto.Password, data.PasswordHash, data.PasswordKey))
+            if (!PasswordMatchHash(loginDto.Password, data.PasswordHash, data.PasswordKey))
                 return null;
             return data;
         }
@@ -71,7 +71,9 @@ namespace server.Repositories
             {
                 UserName = userDto.UserName,
                 PasswordHash = passwordHash,
-                PasswordKey = passwordKey
+                PasswordKey = passwordKey,
+                Email = userDto.Email,
+                PhoneNumber = userDto.PhoneNumber
             };
 
             _context.Users.Add(data);
@@ -108,9 +110,9 @@ namespace server.Repositories
 
         }
 
-        public async Task<bool> UserAlreadyExists(string userName)
+        public async Task<bool> UserAlreadyExists(string email)
         {
-            return await _context.Users.AnyAsync(x => x.UserName == userName);
+            return await _context.Users.AnyAsync(x => x.Email == email);
         }
     }
 }

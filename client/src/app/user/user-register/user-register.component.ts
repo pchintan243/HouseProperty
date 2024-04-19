@@ -1,7 +1,9 @@
+import { AuthService } from './../../services/auth.service';
 import { Component, OnInit } from '@angular/core';
 import { AbstractControl, FormControl, FormGroup, ValidationErrors, Validators } from '@angular/forms';
-import { User } from 'src/app/model/user';
-import { UserService } from 'src/app/services/user.service';
+import { Router } from '@angular/router';
+import { ToastrService } from 'ngx-toastr';
+import { UserForRegister } from 'src/app/model/user';
 
 @Component({
 	selector: 'app-user-register',
@@ -11,10 +13,10 @@ import { UserService } from 'src/app/services/user.service';
 export class UserRegisterComponent implements OnInit {
 
 	registrationForm!: FormGroup;
-	user!: User;
+	user!: UserForRegister;
 	isSubmit: boolean = false;
 
-	constructor(private userService: UserService) { }
+	constructor(private authService: AuthService, private toastr: ToastrService, private router: Router) { }
 
 	ngOnInit(): void {
 		this.registrationForm = new FormGroup<any>({
@@ -22,7 +24,7 @@ export class UserRegisterComponent implements OnInit {
 			email: new FormControl('', [Validators.required, Validators.email]),
 			password: new FormControl(null, Validators.required),
 			confirmPassword: new FormControl(null, Validators.required),
-			mobile: new FormControl('', [Validators.required, Validators.maxLength(10)])
+			phoneNumber: new FormControl('', [Validators.required, Validators.maxLength(10)])
 		}, this.passwordMatchingValidator);
 	}
 
@@ -42,25 +44,30 @@ export class UserRegisterComponent implements OnInit {
 	get confirmPassword() {
 		return this.registrationForm.get('confirmPassword') as FormControl;
 	}
-	get mobile() {
-		return this.registrationForm.get('mobile') as FormControl;
+	get phoneNumber() {
+		return this.registrationForm.get('phoneNumber') as FormControl;
 	}
 
 	onSubmit() {
 		if (this.registrationForm.valid) {
-			console.log(this.registrationForm);
-			this.userService.addUser(this.userData());
-			this.registrationForm.reset();
-			this.isSubmit = false;
+			this.authService.registerUser(this.userData()).subscribe((res) => {
+				this.registrationForm.reset();
+				console.log(res);
+				this.isSubmit = false;
+				this.toastr.success("User Registered successfully");
+				this.router.navigate(['/user/login']);
+			}, error => {
+				this.toastr.error(error.error);
+			});
 		}
 	}
 
-	userData(): User {
+	userData(): UserForRegister {
 		return this.user = {
 			userName: this.userName.value,
 			email: this.email.value,
 			password: this.password.value,
-			mobile: this.mobile.value
+			phoneNumber: this.phoneNumber.value
 		}
 	}
 }

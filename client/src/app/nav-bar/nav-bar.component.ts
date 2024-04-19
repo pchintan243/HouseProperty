@@ -10,31 +10,34 @@ import { ToastrService } from 'ngx-toastr';
 export class NavBarComponent implements OnInit {
 
   isLogin: boolean = false;
-  loggedInUser: string = '';
+  userName?: string = '';
   constructor(private router: Router, private toastr: ToastrService) { }
 
   ngOnInit() {
   }
 
   loggedIn() {
-    let data = localStorage.getItem('Users');
+    let data = localStorage.getItem('Token');
+    this.userName = localStorage.getItem('UserName') as string;
 
-    if (data) {
-      return localStorage.getItem('isLogin');
+    if (localStorage.getItem('Token')) {  
+      return true;
     }
     return false;
   }
 
   register() {
-    return localStorage.getItem('isLogin') === 'true';
+    return localStorage.getItem('Token');
   }
 
   onLogout() {
-    localStorage.removeItem('isLogin');
+    localStorage.removeItem('Token');
+    localStorage.removeItem('UserName');
     this.toastr.success('User log out successfully');
     // Timeout for toaster will be not displayed if we directly logout. It logout immediately that's why toaster will not display
     setTimeout(() => {
-      this.router.navigate(['/login']);
+      this.router.navigate(['/user/login']);
     }, 1000);
+    return false;
   }
 }

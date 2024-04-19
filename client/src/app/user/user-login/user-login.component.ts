@@ -3,6 +3,7 @@ import { Component } from '@angular/core';
 import { NgForm } from '@angular/forms';
 import { Router } from '@angular/router';
 import { ToastrService } from 'ngx-toastr';
+import { UserForLogin } from 'src/app/model/user';
 
 @Component({
   selector: 'app-user-login',
@@ -14,11 +15,16 @@ export class UserLoginComponent {
   constructor(private authService: AuthService, private toastr: ToastrService, private router: Router) { }
 
   onLogin(loginForm: NgForm) {
-    if (this.authService.authUser(loginForm.value)) {
-      localStorage.setItem('isLogin', 'true');
-      this.router.navigate(['/']);
-      return this.toastr.success('User logged in successfully');
-    }
-    return this.toastr.error('Credentials are not valid');
+    console.log(loginForm.value);
+    this.authService.authUser(loginForm.value).subscribe(
+      (res: any) => {
+        localStorage.setItem('Token', JSON.stringify(res.token));
+        localStorage.setItem('UserName', res.userName);
+        this.toastr.success("User Logged in successfully");
+        this.router.navigate(['/']);
+      }, error => {
+        this.toastr.error(error.error);
+      }
+    );
   }
 }

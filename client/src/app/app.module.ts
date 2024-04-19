@@ -20,7 +20,6 @@ import { BsDatepickerModule } from 'ngx-bootstrap/datepicker';
 import { TabsModule } from 'ngx-bootstrap/tabs';
 import { CommonModule } from '@angular/common';
 import { HousingService } from './services/housing.service';
-import { UserService } from './services/user.service';
 import { PropertyDetailResolverService } from './Property/property-detail/property-detail-resolver.service';
 import { NgxGalleryModule } from '@kolkov/ngx-gallery';
 import { FilterPipe } from './pipes/filter.pipe';
@@ -63,11 +62,10 @@ const appRoutes: Routes = [
     TabsModule.forRoot(),
     BsDatepickerModule.forRoot(),
     ButtonsModule.forRoot(),
-    NgxGalleryModule
+    NgxGalleryModule    
   ],
   providers: [
     HousingService,
-    UserService,
     ToastrService,
     PropertyDetailResolverService
   ],
