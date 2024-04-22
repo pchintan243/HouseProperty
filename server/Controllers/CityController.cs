@@ -9,7 +9,7 @@ using server.Models;
 
 namespace server.Controllers
 {
-    [Authorize]
+    // [Authorize]
     public class CityController : BaseController
     {
         private readonly DataContext _context;
@@ -65,7 +65,7 @@ namespace server.Controllers
             var data = _mapper.Map(cityDto, city);
 
             var listOfCities = await _context.Cities.Select(x => x.Name).ToListAsync();
-            if (cityDto.CityName != null && !listOfCities.Contains(cityDto.CityName.ToLower()))
+            if (cityDto.Name != null && !listOfCities.Contains(cityDto.Name.ToLower()))
             {
                 _uow.CityRepository.AddCity(data);
                 await _uow.SaveAsync();
@@ -91,7 +91,7 @@ namespace server.Controllers
                 // city.CityName = cityDto.CityName;
                 // city.LastUpdatedBy = cityDto.LastUpdatedBy;
                 _mapper.Map(cityDto, city);
-                if (listOfCities.Contains(cityDto.CityName.ToLower()))
+                if (listOfCities.Contains(cityDto.Name.ToLower()))
                 {
                     return BadRequest("City is already in the list of cities");
                 }

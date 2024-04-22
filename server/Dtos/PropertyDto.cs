@@ -1,21 +1,17 @@
-using System.ComponentModel.DataAnnotations.Schema;
+using server.Models;
 
-namespace server.Models
+namespace server.Dtos
 {
-    public class Property : BaseEntity
+    public class PropertyDto
     {
-        public int Id { get; set; }
         public int SellRent { get; set; }
         public string Name { get; set; }
         public int PropertyTypeId { get; set; }
-        public PropertyType PropertyType { get; set; }
         public int FurnishingTypeId { get; set; }
-        public FurnishingType FurnishingType { get; set; }
         public int Price { get; set; }
         public int BHK { get; set; }
         public int BuiltArea { get; set; }
         public int CityId { get; set; }
-        public City City { get; set; }
         public bool ReadyToMove { get; set; }
         public int CarpetArea { get; set; }
         public string Address { get; set; }
@@ -29,10 +25,8 @@ namespace server.Models
         public DateTime EstPossessionOn { get; set; }
         public int Age { get; set; }
         public string Description { get; set; }
-        public ICollection<Photo> Photos { get; set; }
-        public DateTime PostedOn { get; set; } = DateTime.Now;
-        [ForeignKey("User")]
+        // public ICollection<Photo> Photos { get; set; }
         public int PostedBy { get; set; }
-        public User User { get; set; }
+        public int LastUpdatedBy { get; set; }
     }
 }

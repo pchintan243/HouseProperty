@@ -11,7 +11,7 @@ namespace server.Helper
     {
         public AutoMapperProfile()
         {
-            CreateMap<AppUser, CityDto>().ReverseMap();
+            CreateMap<City, CityDto>().ReverseMap();
         }
     }
 }

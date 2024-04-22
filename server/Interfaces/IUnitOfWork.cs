@@ -4,6 +4,7 @@ namespace server.Interfaces
     {
         ICityRepository CityRepository { get; }
         IUserRepository UserRepository { get; }
+        IPropertyRepository PropertyRepository { get; }
         Task<bool> SaveAsync();
     }
 }

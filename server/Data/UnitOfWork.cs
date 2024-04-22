@@ -13,9 +13,12 @@ namespace server.Data
             _context = context;
             _configuration = configuration;
         }
+
         public ICityRepository CityRepository => new CityRepository(_context);
 
         public IUserRepository UserRepository => new UserRepository(_context, _configuration);
+
+        public IPropertyRepository PropertyRepository => new PropertyRepository(_context);
 
         public async Task<bool> SaveAsync()
         {
