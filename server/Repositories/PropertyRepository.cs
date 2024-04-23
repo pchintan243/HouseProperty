@@ -31,8 +31,13 @@ namespace server.Repositories
         public async Task<IEnumerable<Property>> GetPropertiesAsync(int sellRent)
         {
             var ListOfProperties = await _context
-                .Properties.Where(x => x.SellRent == sellRent)
+                .Properties
+                .Include(x => x.PropertyType)
+                .Include(x => x.City)
+                .Include(x => x.FurnishingType)
+                .Where(x => x.SellRent == sellRent || x.Id == sellRent)
                 .ToListAsync();
+
             return ListOfProperties;
         }
     }

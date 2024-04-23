@@ -1,3 +1,4 @@
+using AutoMapper;
 using Microsoft.AspNetCore.Mvc;
 using server.Data;
 using server.Dtos;
@@ -10,18 +11,21 @@ namespace server.Controllers
     {
         private readonly IUnitOfWork _uow;
         private readonly DataContext _context;
+        private readonly IMapper _mapper;
 
-        public PropertyController(IUnitOfWork uow, DataContext context)
+        public PropertyController(IUnitOfWork uow, DataContext context, IMapper mapper)
         {
             _uow = uow;
             _context = context;
+            _mapper = mapper;
         }
 
         [HttpGet("{sellRent}")]
         public async Task<IActionResult> GetProperties(int sellRent)
         {
             var ListOfProperties = await _uow.PropertyRepository.GetPropertiesAsync(sellRent);
-            return Ok(ListOfProperties);
+            var propertyList = _mapper.Map<IEnumerable<PropertyDto>>(ListOfProperties);
+            return Ok(propertyList);
         }
 
         [HttpPost]
@@ -31,12 +35,9 @@ namespace server.Controllers
             {
                 SellRent = propertyDto.SellRent,
                 Name = propertyDto.Name,
-                PropertyTypeId = propertyDto.PropertyTypeId,
-                FurnishingTypeId = propertyDto.FurnishingTypeId,
                 Price = propertyDto.Price,
                 BHK = propertyDto.BHK,
                 BuiltArea = propertyDto.BuiltArea,
-                CityId = propertyDto.CityId,
                 ReadyToMove = propertyDto.ReadyToMove,
                 CarpetArea = propertyDto.CarpetArea,
                 Address = propertyDto.Address,
@@ -50,7 +51,6 @@ namespace server.Controllers
                 EstPossessionOn = propertyDto.EstPossessionOn,
                 Age = propertyDto.Age,
                 Description = propertyDto.Description,
-                // Photos = propertyDto.Photos,
                 PostedBy = propertyDto.PostedBy
             };
             _uow.PropertyRepository.AddProperty(data);

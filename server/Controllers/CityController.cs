@@ -31,7 +31,7 @@ namespace server.Controllers
         public async Task<IActionResult> GetCities()
         {
             var listOfCities = await _uow.CityRepository.GetCitiesAsync();
-            return Ok(listOfCities.Reverse());
+            return Ok(listOfCities.Select(x => x.Name));
         }
 
         /// <summary>
@@ -102,7 +102,7 @@ namespace server.Controllers
         }
 
         /// <summary>
-        /// Delete Particular City 
+        /// Delete Particular Cit
         /// </summary>
         /// <returns></returns>
         [HttpDelete]

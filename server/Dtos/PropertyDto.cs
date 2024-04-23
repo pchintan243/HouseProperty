@@ -4,14 +4,16 @@ namespace server.Dtos
 {
     public class PropertyDto
     {
+        public int Id { get; set; }
         public int SellRent { get; set; }
         public string Name { get; set; }
-        public int PropertyTypeId { get; set; }
-        public int FurnishingTypeId { get; set; }
+        public string PropertyType { get; set; }
+        public string FurnishingType { get; set; }
         public int Price { get; set; }
         public int BHK { get; set; }
         public int BuiltArea { get; set; }
-        public int CityId { get; set; }
+        public string City { get; set; }
+        public string Country { get; set; }
         public bool ReadyToMove { get; set; }
         public int CarpetArea { get; set; }
         public string Address { get; set; }
@@ -25,6 +27,7 @@ namespace server.Dtos
         public DateTime EstPossessionOn { get; set; }
         public int Age { get; set; }
         public string Description { get; set; }
+
         // public ICollection<Photo> Photos { get; set; }
         public int PostedBy { get; set; }
         public int LastUpdatedBy { get; set; }
