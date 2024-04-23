@@ -21,7 +21,7 @@
 
         <h6 class="mt-2">{{property?.furnishingType}}
             <span *ngIf="property?.furnishingType !== 'Unfurnished'">Furnished</span>
-            <span *ngIf="property?.readyToMove"> | Ready to Move</span>
+            <span> | ReadyToMove: {{property?.readyToMove ? 'Yes' : 'No'}}</span>
             <!-- <span *ngIf="!property?.RTM"> | Posession: {{property?.estPossessionOn | date}}</span> -->
         </h6>
 

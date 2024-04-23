@@ -15,11 +15,7 @@ export class HousingService {
 	}
 
 	getProperty(id: number) {
-		return this.getAllProperties(id).pipe(
-			map(propertiesArray => {
-				return propertiesArray.find(p => p.id == id);
-			})
-		);
+		return this.http.get<Property>('https://localhost:1002/api/Property/GetPropertyDetail/' + id.toString());
 	}
 
 	getAllProperties(SellRent?: number): Observable<Property[]> {
@@ -43,6 +39,28 @@ export class HousingService {
 			localStorage.setItem('PID', '101');
 			return 101;
 		}
+	}
+
+	getPropertyAge(dateOfEstablishment: Date) {
+		
+		const today = new Date();
+		const estDate = new Date(dateOfEstablishment);
+		let age = today.getFullYear() - estDate.getFullYear();
+		const m = today.getMonth() - estDate.getMonth();
+
+		if (m < 0 || (m === 0 && today.getDate() < estDate.getDate())) {
+			age--;
+		}
+
+		if (today < estDate) {
+			return '0';
+		}
+
+		if (age === 0) {
+			return 'Less than a year';
+		}
+
+		return age.toString();
 	}
 
 }

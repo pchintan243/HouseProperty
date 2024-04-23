@@ -225,17 +225,15 @@ export class AddPropertyComponent implements OnInit {
         this.property.builtArea = this.BuiltArea.value;
         this.property.carpetArea = this.CarpetArea.value;
         this.property.floorNo = this.FloorNo.value;
-        this.property.totalFloor = this.TotalFloor.value;
+        this.property.totalFloors = this.TotalFloor.value;
         this.property.address = this.Address.value;
         this.property.address2 = this.LandMark.value;
         this.property.readyToMove = this.RTM.value;
-        this.property.AOP = this.AOP.value;
+        this.property.age = this.AOP.value;
         this.property.gated = this.Gated.value;
         this.property.mainEntrance = this.MainEntrace.value;
         this.property.estPossessionOn = this.PossesioOn.value;
         this.property.description = this.Description.value;
-        this.property.image = '';
-        this.property.postedOn = new Date().toString();
     }
 
     allTabsValid(): boolean {

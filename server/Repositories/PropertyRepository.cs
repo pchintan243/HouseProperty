@@ -31,14 +31,25 @@ namespace server.Repositories
         public async Task<IEnumerable<Property>> GetPropertiesAsync(int sellRent)
         {
             var ListOfProperties = await _context
-                .Properties
-                .Include(x => x.PropertyType)
+                .Properties.Include(x => x.PropertyType)
                 .Include(x => x.City)
                 .Include(x => x.FurnishingType)
                 .Where(x => x.SellRent == sellRent || x.Id == sellRent)
                 .ToListAsync();
 
             return ListOfProperties;
+        }
+
+        public async Task<Property> GetPropertyDetailAsync(int id)
+        {
+            var property = await _context
+                .Properties.Include(x => x.PropertyType)
+                .Include(x => x.City)
+                .Include(x => x.FurnishingType)
+                .Where(x => x.Id == id)
+                .FirstAsync();
+
+            return property;
         }
     }
 }

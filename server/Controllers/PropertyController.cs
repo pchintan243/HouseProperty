@@ -38,24 +38,19 @@ namespace server.Controllers
                 Price = propertyDto.Price,
                 BHK = propertyDto.BHK,
                 BuiltArea = propertyDto.BuiltArea,
-                ReadyToMove = propertyDto.ReadyToMove,
-                CarpetArea = propertyDto.CarpetArea,
-                Address = propertyDto.Address,
-                Address2 = propertyDto.Address2,
-                FloorNo = propertyDto.FloorNo,
-                TotalFloors = propertyDto.TotalFloors,
-                MainEntrance = propertyDto.MainEntrance,
-                Security = propertyDto.Security,
-                Gated = propertyDto.Gated,
-                Maintenance = propertyDto.Maintenance,
-                EstPossessionOn = propertyDto.EstPossessionOn,
-                Age = propertyDto.Age,
-                Description = propertyDto.Description,
-                PostedBy = propertyDto.PostedBy
+                ReadyToMove = propertyDto.ReadyToMove
             };
             _uow.PropertyRepository.AddProperty(data);
             await _context.SaveChangesAsync();
             return Ok(data);
+        }
+
+        [HttpGet("{id}")]
+        public async Task<IActionResult> GetPropertyDetail(int id)
+        {
+            var property = await _uow.PropertyRepository.GetPropertyDetailAsync(id);
+            var propertyDetail = _mapper.Map<PropertyDetailDto>(property);
+            return Ok(propertyDetail);
         }
     }
 }
