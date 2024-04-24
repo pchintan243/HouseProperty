@@ -2,6 +2,7 @@ import { HttpClient } from '@angular/common/http';
 import { Injectable } from '@angular/core';
 import { map, Observable } from 'rxjs';
 import { Property } from '../model/property';
+import { IPropertyTypes } from '../model/ipropertytypes';
 
 @Injectable({
 	providedIn: 'root'
@@ -14,6 +15,14 @@ export class HousingService {
 		return this.http.get<string[]>('https://localhost:1002/api/City/GetCities');
 	}
 
+	getPropertyTypes(): Observable<IPropertyTypes[]> {
+		return this.http.get<IPropertyTypes[]>('https://localhost:1002/api/PropertyType/GetPropertyTypes');
+	}
+
+	getFurnishingTypes(): Observable<IPropertyTypes[]> {
+		return this.http.get<IPropertyTypes[]>('https://localhost:1002/api/PropertyType/GetFurnishingTypes');
+	}
+
 	getProperty(id: number) {
 		return this.http.get<Property>('https://localhost:1002/api/Property/GetPropertyDetail/' + id.toString());
 	}
@@ -22,11 +31,7 @@ export class HousingService {
 		return this.http.get<Property[]>('https://localhost:1002/api/Property/GetProperties/' + SellRent?.toString());
 	}
 	addProperty(property: Property) {
-		let newItem = [property];
-		if (localStorage.getItem('newItem')) {
-			newItem = [property, ...JSON.parse(localStorage.getItem('newItem') as string)];
-		}
-		localStorage.setItem('newItem', JSON.stringify(newItem));
+		return this.http.post('https://localhost:1002/api/Property/AddProperty', property);
 	}
 
 	newPropId() {
@@ -42,7 +47,7 @@ export class HousingService {
 	}
 
 	getPropertyAge(dateOfEstablishment: Date) {
-		
+
 		const today = new Date();
 		const estDate = new Date(dateOfEstablishment);
 		let age = today.getFullYear() - estDate.getFullYear();

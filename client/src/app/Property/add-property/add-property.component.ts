@@ -5,6 +5,7 @@ import { Router } from '@angular/router';
 import { TabsetComponent } from 'ngx-bootstrap/tabs';
 import { ToastrService } from 'ngx-toastr';
 import { IPropertyBase } from 'src/app/model/ipropertybase';
+import { IPropertyTypes } from 'src/app/model/ipropertytypes';
 import { Property } from 'src/app/model/property';
 
 @Component({
@@ -20,8 +21,9 @@ export class AddPropertyComponent implements OnInit {
     nextClicked!: boolean;
     property = new Property();
 
-    propertyTypes: Array<string> = ['House', 'Apartment', 'Duplex'];
-    furnishTypes: Array<string> = ['Full', 'Semi', 'Unfurnished'];
+    propertyTypes!: IPropertyTypes[];
+    furnishTypes!: IPropertyTypes[];
+
     cityList: string[] = [];
 
     propertyView: IPropertyBase = {
@@ -44,10 +46,36 @@ export class AddPropertyComponent implements OnInit {
         this.CreateAddPropertyForm();
         this.housingService.getAllCities().subscribe((cities: string[]) => {
             this.cityList = cities;
-            console.log(this.cityList);
-        })
+        });
+
+        this.housingService.getPropertyTypes().subscribe((property: IPropertyTypes[]) => {
+            this.propertyTypes = property;
+        });
+
+        this.housingService.getFurnishingTypes().subscribe((furnish: IPropertyTypes[]) => {
+            this.furnishTypes = furnish;
+        });
     }
 
+    updateBuiltArea(value: string): void {
+        this.propertyView.builtArea = parseFloat(value);
+    }
+
+    // Assuming 'propertyView' is a property of your component
+    updateCity(selectedCity: string): void {
+        this.propertyView.city = selectedCity;
+    }
+
+    // Assuming 'propertyView' is a property of your component
+    updatePrice(value: string): void {
+        this.propertyView.price = parseFloat(value);
+    }
+    
+    updateEstPossessionOn(value: string): void {
+        // Parse the string value into a Date object
+        this.propertyView.estPossessionOn = new Date(value);
+    }
+    
     CreateAddPropertyForm() {
         this.addPropertyForm = this.fb.group({
             BasicInfo: this.fb.group({
@@ -72,9 +100,9 @@ export class AddPropertyComponent implements OnInit {
                 LandMark: [null]
             }),
             OtherInfo: this.fb.group({
-                RTM: [null, Validators.required],
-                PosessionOn: [null],
-                AOP: [null],
+                ReadyToMove: [null, Validators.required],
+                EstPosessionOn: [null],
+                Age: [null],
                 Gated: [null],
                 MainEntrance: [null],
                 Description: [null],
@@ -164,16 +192,16 @@ export class AddPropertyComponent implements OnInit {
         return this.AddressInfo.controls['LandMark'] as FormControl;
     }
 
-    get RTM() {
-        return this.OtherInfo.controls['RTM'] as FormControl;
+    get ReadyToMove() {
+        return this.OtherInfo.controls['ReadyToMove'] as FormControl;
     }
 
-    get PossesioOn() {
-        return this.OtherInfo.controls['PosessionOn'] as FormControl;
+    get EstPossessionOn() {
+        return this.OtherInfo.controls['EstPosessionOn'] as FormControl;
     }
 
-    get AOP() {
-        return this.OtherInfo.controls['AOP'] as FormControl;
+    get Age() {
+        return this.OtherInfo.controls['Age'] as FormControl;
     }
 
     get Gated() {
@@ -228,11 +256,11 @@ export class AddPropertyComponent implements OnInit {
         this.property.totalFloors = this.TotalFloor.value;
         this.property.address = this.Address.value;
         this.property.address2 = this.LandMark.value;
-        this.property.readyToMove = this.RTM.value;
-        this.property.age = this.AOP.value;
+        this.property.readyToMove = this.ReadyToMove.value;
+        this.property.age = this.Age.value;
         this.property.gated = this.Gated.value;
         this.property.mainEntrance = this.MainEntrace.value;
-        this.property.estPossessionOn = this.PossesioOn.value;
+        this.property.estPossessionOn = this.EstPossessionOn.value;
         this.property.description = this.Description.value;
     }
 

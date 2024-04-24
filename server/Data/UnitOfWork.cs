@@ -19,6 +19,7 @@ namespace server.Data
         public IUserRepository UserRepository => new UserRepository(_context, _configuration);
 
         public IPropertyRepository PropertyRepository => new PropertyRepository(_context);
+        public IPropertyTypeRepository PropertyTypeRepository => new PropertyTypeRepository(_context);
 
         public async Task<bool> SaveAsync()
         {

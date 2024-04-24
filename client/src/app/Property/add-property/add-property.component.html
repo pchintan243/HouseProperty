@@ -24,10 +24,10 @@
 
                                 <div class="form-group col-12">
                                     <p>BHK</p>
-                                    <div class="btn-group" btnRadioGroup [(ngModel)]="propertyView.bhk" name="BHK"
-                                        formControlName="BHK">
+                                    <div class="btn-group" btnRadioGroup name="BHK" formControlName="BHK">
                                         <label *ngFor="let bhk of [1,2,3,4]" class="btn btn-outline-primary mx-2"
-                                            [btnRadio]="bhk" role="button" name="SellRent">{{bhk}}</label>
+                                            [btnRadio]="bhk" role="button" name="BHK"
+                                            (click)="propertyView.bhk = bhk">{{bhk}}</label>
                                     </div>
                                     <div class="error-block" *ngIf="BHK.invalid && nextClicked">
                                         Please select BHK
@@ -36,10 +36,10 @@
 
                                 <div class="form-group col-12">
                                     <p>Property Type</p>
-                                    <div class="btn-group" formControlName="PType" [(ngModel)]="propertyView.propertyType"
-                                        btnRadioGroup>
+                                    <div class="btn-group" formControlName="PType" btnRadioGroup>
                                         <label *ngFor="let ptype of propertyTypes" class="btn btn-outline-primary mx-2"
-                                            [btnRadio]="ptype" role="button" name="SellRent">{{ptype}}</label>
+                                            [btnRadio]="ptype.id" role="button" tabindex="0" name="PropType"
+                                            (click)="propertyView.propertyType=ptype.name">{{ptype.name}}</label>
                                     </div>
                                     <div class="error-block" *ngIf="PType.invalid && nextClicked">
                                         Please select property type
@@ -48,10 +48,10 @@
 
                                 <div class="form-group col-12">
                                     <p>Furnishing Type</p>
-                                    <div class="btn-group" btnRadioGroup [(ngModel)]="propertyView.furnishingType"
-                                        formControlName="FType">
+                                    <div class="btn-group" btnRadioGroup formControlName="FType">
                                         <label *ngFor="let ftype of furnishTypes" class="btn btn-outline-primary mx-2"
-                                            [btnRadio]="ftype" role="button" name="SellRent">{{ftype}}</label>
+                                            (click)="propertyView.furnishingType = ftype.name" [btnRadio]="ftype.id"
+                                            role="button" name="FurnishType">{{ftype.name}}</label>
                                     </div>
                                     <div class="error-block" *ngIf="FType.invalid && nextClicked">
                                         Please select furnishing type
@@ -60,8 +60,8 @@
 
                                 <div class="form-group col-12">
                                     <label>in Building/Society/Project</label>
-                                    <input type="text" class="form-control" formControlName="Name" ngModel
-                                        [(ngModel)]="propertyView.name">
+                                    <input type="text" class="form-control" formControlName="Name" #propName
+                                        (keyup)="propertyView.name = propName.value">
                                     <div class="error-block" *ngIf="Name.invalid && (nextClicked || Name.touched)">
                                         Please select building, society or project name
                                     </div>
@@ -69,7 +69,8 @@
 
                                 <div class="form-group col-12">
                                     <label>City</label>
-                                    <select class="form-control" [(ngModel)]="propertyView.city" formControlName="City">
+                                    <select class="form-control" formControlName="City" #CityName
+                                        (change)="updateCity(CityName.value)">
                                         <option value=''>--Select City--</option>
                                         <option *ngFor="let city of cityList" value={{city}}>{{city}}
                                         </option>
@@ -88,8 +89,8 @@
                                 <div class="form-group col-12">
                                     <label *ngIf="SellRent.value == 1">Price (in USD)</label>
                                     <label *ngIf="SellRent.value == 2">Rent (in USD)</label>
-                                    <input type="text" class="form-control" formControlName="Price"
-                                        [(ngModel)]="propertyView.price">
+                                    <input type="text" class="form-control" formControlName="Price" #price
+                                        (keyup)="updatePrice(price.value)">
                                     <div class="error-block" *ngIf="Price.invalid && (nextClicked || Price.touched)">
                                         Please select
                                         <span *ngIf="SellRent.value == 1;else ShowRent">Price</span>
@@ -111,8 +112,8 @@
 
                                 <div class="form-group col-12">
                                     <label>Built Area (in Sqr Feet)</label>
-                                    <input type="text" class="form-control" [(ngModel)]="propertyView.builtArea"
-                                        formControlName="BuiltArea">
+                                    <input type="text" class="form-control" formControlName="BuiltArea" #builtArea
+                                        (keyup)="updateBuiltArea(builtArea.value)">
                                     <div class="error-block" *ngIf="BuiltArea.invalid && nextClicked">
                                         Please select built up area
                                     </div>
@@ -170,29 +171,25 @@
                             <tab heading="Other Details" formGroupName="OtherInfo">
                                 <div class="form-group col-12">
                                     <label>Ready to Move</label><br />
-                                    <div class="btn-group" btnRadioGroup formControlName="RTM">
+                                    <div class="btn-group" btnRadioGroup formControlName="ReadyToMove">
                                         <label class="btn btn-outline-primary mr-2" btnRadio=1 tabindex="0"
-                                            role="button" name="RTM">Yes
+                                            role="button" name="ReadyToMove" (click)="propertyView.readyToMove=1">Yes
                                         </label>
                                         <label class="btn btn-outline-primary" btnRadio=2 tabindex="0" role="button"
-                                            name="RTM">No
+                                            name="ReadyToMove" (click)="propertyView.readyToMove=0">No
                                         </label>
                                     </div>
-                                    <div class="error-block" *ngIf="RTM.invalid && nextClicked">
+                                    <div class="error-block" *ngIf="ReadyToMove.invalid && nextClicked">
                                         Please select ready to move
                                     </div>
                                 </div>
 
-                                <div *ngIf="RTM.value==2" class="form-group col-6">
-                                    <label>Possession/Avaialble From</label>
-                                    <input type="text" class="form-control" formControlName="PossesioOn" bsDatepicker
-                                        [bsConfig]="{containerClass: 'theme-dark-blue',
-                                    dateInputFormat: 'DD-MM-YYYY'}">
-                                </div>
-
-                                <div *ngIf="RTM.value==1" class="form-group col-3">
-                                    <label>Age of Property</label>
-                                    <input type="text" formControlName="AOP" class="form-control">
+                                <div class="form-group col-6">
+                                    <label *ngIf="propertyView.readyToMove">Establishment Date</label>
+                                    <label *ngIf="!propertyView.readyToMove">Possession Date</label>
+                                    <input type="date" class="form-control" formControlName="EstPossessionOn"
+                                        #ESTPossessionOn
+                                        (change)="updateEstPossessionOn(ESTPossessionOn.value)">
                                 </div>
 
                                 <div class="form-group col-12">
