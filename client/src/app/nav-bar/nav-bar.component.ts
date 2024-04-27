@@ -17,21 +17,21 @@ export class NavBarComponent implements OnInit {
   }
 
   loggedIn() {
-    let data = localStorage.getItem('Token');
+    let data = localStorage.getItem('token');
     this.userName = localStorage.getItem('UserName') as string;
 
-    if (localStorage.getItem('Token')) {  
+    if (localStorage.getItem('token')) {  
       return true;
     }
     return false;
   }
 
   register() {
-    return localStorage.getItem('Token');
+    return localStorage.getItem('token');
   }
 
   onLogout() {
-    localStorage.removeItem('Token');
+    localStorage.removeItem('token');
     localStorage.removeItem('UserName');
     this.toastr.success('User log out successfully');
     // Timeout for toaster will be not displayed if we directly logout. It logout immediately that's why toaster will not display

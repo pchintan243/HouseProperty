@@ -25,7 +25,5 @@ namespace server.Dtos
         public string Description { get; set; }
 
         // public ICollection<Photo> Photos { get; set; }
-        public int PostedBy { get; set; }
-        public int LastUpdatedBy { get; set; }
     }
 }

@@ -47,6 +47,12 @@ export class AddPropertyComponent implements OnInit {
         private toast: ToastrService) { }
 
     ngOnInit() {
+
+        if (!localStorage.getItem('token')) {
+            this.toast.error('You can not access this without login');
+            this.router.navigate(['/api/account/login']);
+        }
+
         this.CreateAddPropertyForm();
         this.housingService.getAllCities().subscribe((cities: CityName[]) => {
             this.cityList = cities;

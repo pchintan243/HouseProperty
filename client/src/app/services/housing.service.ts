@@ -1,4 +1,4 @@
-import { HttpClient } from '@angular/common/http';
+import { HttpClient, HttpHeaders } from '@angular/common/http';
 import { Injectable } from '@angular/core';
 import { map, Observable } from 'rxjs';
 import { Property } from '../model/property';
@@ -13,7 +13,16 @@ export class HousingService {
 	constructor(private http: HttpClient) { }
 
 	getAllCities(): Observable<CityName[]> {
-		return this.http.get<CityName[]>('https://localhost:1002/api/City/GetCities');
+		let token = localStorage.getItem('token');
+		if (token) {
+			token = token.replace(/^"(.*)"$/, '$1');
+		}
+		const httpOptions = {
+			headers: new HttpHeaders({
+				Authorization: 'Bearer ' + token
+			})
+		};
+		return this.http.get<CityName[]>('https://localhost:1002/api/City/GetCities', httpOptions);
 	}
 
 	getPropertyTypes(): Observable<IPropertyTypes[]> {
@@ -25,26 +34,41 @@ export class HousingService {
 	}
 
 	getProperty(id: number) {
-		return this.http.get<Property>('https://localhost:1002/api/Property/GetPropertyDetail/' + id.toString());
+		let token = localStorage.getItem('token');
+		if (token) {
+			token = token.replace(/^"(.*)"$/, '$1');
+		}
+		const httpOptions = {
+			headers: new HttpHeaders({
+				Authorization: 'Bearer ' + token
+			})
+		};
+		return this.http.get<Property>('https://localhost:1002/api/Property/GetPropertyDetail/' + id.toString(), httpOptions);
 	}
 
 	getAllProperties(SellRent?: number): Observable<Property[]> {
-		return this.http.get<Property[]>('https://localhost:1002/api/Property/GetProperties/' + SellRent?.toString());
+		let token = localStorage.getItem('token');
+		if (token) {
+			token = token.replace(/^"(.*)"$/, '$1');
+		}
+		const httpOptions = {
+			headers: new HttpHeaders({
+				Authorization: 'Bearer ' + token
+			})
+		};
+		return this.http.get<Property[]>('https://localhost:1002/api/Property/GetProperties/' + SellRent?.toString(), httpOptions);
 	}
 	addProperty(property: Property) {
-		return this.http.post('https://localhost:1002/api/Property/AddProperty', property);
-	}
-
-	newPropId() {
-		if (localStorage.getItem('PID')) {
-			let id = parseInt(localStorage.getItem('PID') || '0') + 1;
-			localStorage.setItem('PID', String(id));
-			return id;
+		let token = localStorage.getItem('token');
+		if (token) {
+			token = token.replace(/^"(.*)"$/, '$1');
 		}
-		else {
-			localStorage.setItem('PID', '101');
-			return 101;
-		}
+		const httpOptions = {
+			headers: new HttpHeaders({
+				Authorization: 'Bearer ' + token
+			})
+		};
+		return this.http.post('https://localhost:1002/api/Property/AddProperty', property, httpOptions);
 	}
 
 	getPropertyAge(dateOfEstablishment: Date) {

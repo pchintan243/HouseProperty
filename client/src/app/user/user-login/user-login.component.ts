@@ -17,7 +17,7 @@ export class UserLoginComponent {
   onLogin(loginForm: NgForm) {
     this.authService.authUser(loginForm.value).subscribe(
       (res: any) => {
-        localStorage.setItem('Token', JSON.stringify(res.token));
+        localStorage.setItem('token', JSON.stringify(res.token));
         localStorage.setItem('UserName', res.userName);
         this.toastr.success("User Logged in successfully");
         this.router.navigate(['/']);

@@ -1,5 +1,5 @@
-using System.Reflection;
 using AutoMapper;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using server.Data;
 using server.Dtos;
@@ -8,6 +8,7 @@ using server.Models;
 
 namespace server.Controllers
 {
+    [Authorize]
     public class PropertyController : BaseController
     {
         private readonly IUnitOfWork _uow;
@@ -33,8 +34,10 @@ namespace server.Controllers
         public async Task<IActionResult> AddProperty(PropertyDto propertyDto)
         {
             var data = _mapper.Map<Property>(propertyDto);
-            data.PostedBy = 1;
-            data.LastUpdatedBy = 1;
+
+            var userId = GetUserId();
+            data.PostedBy = userId;
+            data.LastUpdatedBy = userId;
             _uow.PropertyRepository.AddProperty(data);
             await _uow.SaveAsync();
             return Ok(data);

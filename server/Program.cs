@@ -33,7 +33,7 @@ builder.Services.AddAuthentication(JwtBearerDefaults.AuthenticationScheme)
             ValidateIssuerSigningKey = true,
             ValidateIssuer = false,
             ValidateAudience = false,
-            // IssuerSigningKey = key
+            IssuerSigningKey = key
         };
     })
 ;

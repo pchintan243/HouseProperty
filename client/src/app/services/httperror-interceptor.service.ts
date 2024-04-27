@@ -27,8 +27,11 @@ export class HttperrorInterceptorService implements HttpInterceptor {
       errorMessage = error.error.message;
     } else {
       // server side error handling
-      if (error.status !== 0) {
-        errorMessage = error.error;
+      if (error.status === 401) {
+        return "Unauthorized";
+      }
+      if (error.error.errorMessage && error.status !== 0) {
+        errorMessage = error.error.errorMessage;
       }
     }
     return errorMessage;

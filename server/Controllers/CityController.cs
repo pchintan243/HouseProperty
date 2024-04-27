@@ -9,7 +9,7 @@ using server.Models;
 
 namespace server.Controllers
 {
-    // [Authorize]
+    [Authorize]
     public class CityController : BaseController
     {
         private readonly DataContext _context;
