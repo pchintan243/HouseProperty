@@ -4,6 +4,7 @@ import { FormBuilder, FormControl, FormGroup, NgForm, Validators } from '@angula
 import { Router } from '@angular/router';
 import { TabsetComponent } from 'ngx-bootstrap/tabs';
 import { ToastrService } from 'ngx-toastr';
+import { CityName } from 'src/app/model/icity';
 import { IPropertyBase } from 'src/app/model/ipropertybase';
 import { IPropertyTypes } from 'src/app/model/ipropertytypes';
 import { Property } from 'src/app/model/property';
@@ -24,7 +25,7 @@ export class AddPropertyComponent implements OnInit {
     propertyTypes!: IPropertyTypes[];
     furnishTypes!: IPropertyTypes[];
 
-    cityList: string[] = [];
+    cityList!: CityName[];
 
     propertyView: IPropertyBase = {
         id: 0,
@@ -36,7 +37,10 @@ export class AddPropertyComponent implements OnInit {
         bhk: 0,
         builtArea: 0,
         city: '',
-        readyToMove: 0
+        readyToMove: false,
+        cityId: 0,
+        propertyTypeId: 0,
+        furnishingTypeId: 0
     };
 
     constructor(private router: Router, private fb: FormBuilder, private housingService: HousingService,
@@ -44,7 +48,7 @@ export class AddPropertyComponent implements OnInit {
 
     ngOnInit() {
         this.CreateAddPropertyForm();
-        this.housingService.getAllCities().subscribe((cities: string[]) => {
+        this.housingService.getAllCities().subscribe((cities: CityName[]) => {
             this.cityList = cities;
         });
 
@@ -63,19 +67,19 @@ export class AddPropertyComponent implements OnInit {
 
     // Assuming 'propertyView' is a property of your component
     updateCity(selectedCity: string): void {
-        this.propertyView.city = selectedCity;
+        this.propertyView.cityId = parseFloat(selectedCity);
     }
 
     // Assuming 'propertyView' is a property of your component
     updatePrice(value: string): void {
         this.propertyView.price = parseFloat(value);
     }
-    
+
     updateEstPossessionOn(value: string): void {
         // Parse the string value into a Date object
         this.propertyView.estPossessionOn = new Date(value);
     }
-    
+
     CreateAddPropertyForm() {
         this.addPropertyForm = this.fb.group({
             BasicInfo: this.fb.group({
@@ -89,23 +93,23 @@ export class AddPropertyComponent implements OnInit {
             PriceInfo: this.fb.group({
                 Price: [null, Validators.required],
                 BuiltArea: [null, Validators.required],
-                CarpetArea: [null],
-                Security: [null],
-                Maintenance: [null],
+                CarpetArea: [null, Validators.required],
+                Security: [0],
+                Maintenance: [0],
             }),
             AddressInfo: this.fb.group({
-                FloorNo: [null],
-                TotalFloor: [null],
+                FloorNo: [null, Validators.required],
+                TotalFloor: [null, Validators.required],
                 Address: [null, Validators.required],
-                LandMark: [null]
+                LandMark: [null, Validators.required],
             }),
             OtherInfo: this.fb.group({
-                ReadyToMove: [null, Validators.required],
-                EstPosessionOn: [null],
-                Age: [null],
-                Gated: [null],
-                MainEntrance: [null],
-                Description: [null],
+                ReadyToMove: [Validators.required],
+                EstPossessionOn: [null, Validators.required],
+                Age: [0],
+                Gated: [null, Validators.required],
+                MainEntrance: [null, Validators.required],
+                Description: [null, Validators.required],
             }),
         });
     }
@@ -197,11 +201,7 @@ export class AddPropertyComponent implements OnInit {
     }
 
     get EstPossessionOn() {
-        return this.OtherInfo.controls['EstPosessionOn'] as FormControl;
-    }
-
-    get Age() {
-        return this.OtherInfo.controls['Age'] as FormControl;
+        return this.OtherInfo.controls['EstPossessionOn'] as FormControl;
     }
 
     get Gated() {
@@ -224,40 +224,45 @@ export class AddPropertyComponent implements OnInit {
     onSubmit() {
         this.nextClicked = true;
         if (this.allTabsValid()) {
+            // debugger
             this.mapProperty();
-            this.housingService.addProperty(this.property);
-            this.toast.success('Property Added Successfully');
+            this.housingService.addProperty(this.property).subscribe(
+                () => {
+                    this.toast.success('Property Added Successfully');
 
-            if (this.SellRent.value === '2') {
-                this.router.navigate(['/rent-property']);
-            } else {
-                this.router.navigate(['/']);
-            }
+                    if (this.SellRent.value == '2') {
+                        this.router.navigate(['/rent-property']);
+                    } else {
+                        this.router.navigate(['/']);
+                    }
+                }
+            );
         }
         else {
             this.toast.error('Please fill all the field');
         }
+        console.log(this.property);
+
     }
 
     mapProperty(): void {
-        this.property.id = this.housingService.newPropId();
         this.property.sellRent = +this.SellRent.value;
         this.property.bhk = this.BHK.value;
-        this.property.propertyType = this.PType.value;
+        this.property.propertyTypeId = this.PType.value;
         this.property.name = this.Name.value;
-        this.property.city = this.City.value;
-        this.property.furnishingType = this.FType.value;
+        this.property.cityId = +this.City.value;
+        this.property.furnishingTypeId = this.FType.value;
         this.property.price = this.Price.value;
         this.property.security = this.Security.value;
-        this.property.maintenance = this.Maintenance.value;
+        this.property.maintenance = this.Maintenance?.value;
         this.property.builtArea = this.BuiltArea.value;
         this.property.carpetArea = this.CarpetArea.value;
-        this.property.floorNo = this.FloorNo.value;
+        this.property.floorNo = +this.FloorNo.value;
         this.property.totalFloors = this.TotalFloor.value;
         this.property.address = this.Address.value;
         this.property.address2 = this.LandMark.value;
-        this.property.readyToMove = this.ReadyToMove.value;
-        this.property.age = this.Age.value;
+        this.property.readyToMove = this.ReadyToMove.value == "true" ? true : false;
+        this.property.age = this.housingService.getPropertyAge(this.EstPossessionOn.value);
         this.property.gated = this.Gated.value;
         this.property.mainEntrance = this.MainEntrace.value;
         this.property.estPossessionOn = this.EstPossessionOn.value;

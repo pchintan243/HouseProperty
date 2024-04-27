@@ -3,6 +3,7 @@ import { Injectable } from '@angular/core';
 import { map, Observable } from 'rxjs';
 import { Property } from '../model/property';
 import { IPropertyTypes } from '../model/ipropertytypes';
+import { CityName } from '../model/icity';
 
 @Injectable({
 	providedIn: 'root'
@@ -11,8 +12,8 @@ export class HousingService {
 
 	constructor(private http: HttpClient) { }
 
-	getAllCities(): Observable<string[]> {
-		return this.http.get<string[]>('https://localhost:1002/api/City/GetCities');
+	getAllCities(): Observable<CityName[]> {
+		return this.http.get<CityName[]>('https://localhost:1002/api/City/GetCities');
 	}
 
 	getPropertyTypes(): Observable<IPropertyTypes[]> {
@@ -58,14 +59,14 @@ export class HousingService {
 		}
 
 		if (today < estDate) {
-			return '0';
+			return 0;
 		}
 
 		if (age === 0) {
-			return 'Less than a year';
+			return 1;
 		}
 
-		return age.toString();
+		return age;
 	}
 
 }

@@ -72,7 +72,7 @@
                                     <select class="form-control" formControlName="City" #CityName
                                         (change)="updateCity(CityName.value)">
                                         <option value=''>--Select City--</option>
-                                        <option *ngFor="let city of cityList" value={{city}}>{{city}}
+                                        <option *ngFor="let city of cityList" value={{city.id}}>{{city.name}}
                                         </option>
                                     </select>
                                     <div class="error-block" *ngIf="City.invalid && (nextClicked || City.touched)">
@@ -89,39 +89,43 @@
                                 <div class="form-group col-12">
                                     <label *ngIf="SellRent.value == 1">Price (in USD)</label>
                                     <label *ngIf="SellRent.value == 2">Rent (in USD)</label>
-                                    <input type="text" class="form-control" formControlName="Price" #price
-                                        (keyup)="updatePrice(price.value)">
+                                    <input type="number" class="form-control" formControlName="Price" #priceval
+                                        (keyup)="updatePrice(priceval.value)">
                                     <div class="error-block" *ngIf="Price.invalid && (nextClicked || Price.touched)">
-                                        Please select
                                         <span *ngIf="SellRent.value == 1;else ShowRent">Price</span>
-                                        <ng-template #ShowRent>rent</ng-template>
+                                        <ng-template #ShowRent>Rent</ng-template>
+                                        <span> field is required</span>
                                     </div>
                                 </div>
 
                                 <div *ngIf="SellRent.value==2">
                                     <div class="form-group col-12">
                                         <label>Security (in USD)</label>
-                                        <input type="text" formControlName="Security" class="form-control">
+                                        <input type="number" formControlName="Security" class="form-control">
                                     </div>
 
                                     <div class="form-group col-12">
                                         <label>Maintenance (in USD)</label>
-                                        <input type="text" formControlName="Maintenance" class="form-control">
+                                        <input type="number" formControlName="Maintenance" class="form-control">
                                     </div>
                                 </div>
 
                                 <div class="form-group col-12">
                                     <label>Built Area (in Sqr Feet)</label>
-                                    <input type="text" class="form-control" formControlName="BuiltArea" #builtArea
+                                    <input type="number" class="form-control" formControlName="BuiltArea" #builtArea
                                         (keyup)="updateBuiltArea(builtArea.value)">
                                     <div class="error-block" *ngIf="BuiltArea.invalid && nextClicked">
-                                        Please select built up area
+                                        Built up area field is required
                                     </div>
                                 </div>
 
                                 <div class="form-group col-12">
                                     <label>Carpet Area (in Sqr Feet)</label>
-                                    <input type="text" formControlName="CarpetArea" class="form-control">
+                                    <input type="number" formControlName="CarpetArea" class="form-control">
+                                    <div class="error-block"
+                                        *ngIf="CarpetArea.invalid && (nextClicked || CarpetArea.touched)">
+                                        Carpet area field is required
+                                    </div>
                                 </div>
 
                                 <div class="form-group col-12">
@@ -135,12 +139,20 @@
                             <tab heading="Address" formGroupName="AddressInfo">
                                 <div class="form-group col-12">
                                     <label>Floor</label>
-                                    <input type="text" formControlName="FloorNo" class="form-control">
+                                    <input type="number" formControlName="FloorNo" class="form-control">
+                                    <div class="error-block"
+                                        *ngIf="FloorNo.invalid && (nextClicked || FloorNo.touched)">
+                                        Floor number field is required
+                                    </div>
                                 </div>
 
                                 <div class="form-group col-12">
                                     <label>Total Floor</label>
-                                    <input type="text" formControlName="TotalFloor" class="form-control">
+                                    <input type="number" formControlName="TotalFloor" class="form-control">
+                                    <div class="error-block"
+                                        *ngIf="TotalFloor.invalid && (nextClicked || TotalFloor.touched)">
+                                        Total floor field is required
+                                    </div>
                                 </div>
 
                                 <div class="form-group col-12">
@@ -148,13 +160,17 @@
                                     <input type="text" class="form-control" formControlName="Address">
                                     <div class="error-block"
                                         *ngIf="Address.invalid && (nextClicked || Address.touched)">
-                                        Please select address
+                                        Address field is required
                                     </div>
                                 </div>
 
                                 <div class="form-group col-12">
                                     <label>Landmark</label>
                                     <input type="text" formControlName="LandMark" class="form-control">
+                                    <div class="error-block"
+                                        *ngIf="LandMark.invalid && (nextClicked || LandMark.touched)">
+                                        Landmark field is required
+                                    </div>
                                 </div>
 
                                 <div class="form-group col-12">
@@ -172,11 +188,11 @@
                                 <div class="form-group col-12">
                                     <label>Ready to Move</label><br />
                                     <div class="btn-group" btnRadioGroup formControlName="ReadyToMove">
-                                        <label class="btn btn-outline-primary mr-2" btnRadio=1 tabindex="0"
-                                            role="button" name="ReadyToMove" (click)="propertyView.readyToMove=1">Yes
+                                        <label class="btn btn-outline-primary mr-2" btnRadio="true" tabindex="0"
+                                            role="button" name="ReadyToMove" (click)="propertyView.readyToMove=true">Yes
                                         </label>
-                                        <label class="btn btn-outline-primary" btnRadio=2 tabindex="0" role="button"
-                                            name="ReadyToMove" (click)="propertyView.readyToMove=0">No
+                                        <label class="btn btn-outline-primary" btnRadio="false" tabindex="0"
+                                            role="button" name="ReadyToMove" (click)="propertyView.readyToMove=false">No
                                         </label>
                                     </div>
                                     <div class="error-block" *ngIf="ReadyToMove.invalid && nextClicked">
@@ -188,32 +204,38 @@
                                     <label *ngIf="propertyView.readyToMove">Establishment Date</label>
                                     <label *ngIf="!propertyView.readyToMove">Possession Date</label>
                                     <input type="date" class="form-control" formControlName="EstPossessionOn"
-                                        #ESTPossessionOn
-                                        (change)="updateEstPossessionOn(ESTPossessionOn.value)">
+                                        #ESTPossessionOn (change)="updateEstPossessionOn(ESTPossessionOn.value)">
+                                    <div class="error-block" *ngIf="EstPossessionOn.invalid && nextClicked ">
+                                        Possession Date field is required
+                                    </div>
                                 </div>
 
                                 <div class="form-group col-12">
                                     <label>Gated Community</label>
                                     <div class="btn-group" btnRadioGroup formControlName="Gated">
-                                        <div class="btn-group" btnRadioGroup>
-                                            <label *ngFor="let gate of ['Yes', 'No']"
-                                                class="btn btn-outline-primary mx-2" [btnRadio]="gate" role="button"
-                                                name="SellRent">{{gate}}</label>
-                                        </div>
+                                        <label *ngFor="let gate of ['Yes', 'No']" class="btn btn-outline-primary mx-2"
+                                            [btnRadio]="gate == 'Yes' ? true : false" role="button"
+                                            name="Gated">{{gate}}</label>
+                                    </div>
+                                    <div class="error-block" *ngIf="Gated.invalid && (nextClicked || Gated.touched)">
+                                        Please select Gated field
                                     </div>
                                 </div>
 
                                 <div class="form-group col-12">
                                     <p>Main Entrance</p>
                                     <div class="btn-group" btnRadioGroup formControlName="MainEntrance">
-                                        <label class="btn btn-outline-primary mr-2" btnRadio=1 tabindex="0"
+                                        <label class="btn btn-outline-primary mr-2" btnRadio="East" tabindex="0"
                                             role="button" name="Entrance">East</label>
-                                        <label class="btn btn-outline-primary" btnRadio=2 tabindex="0" role="button"
-                                            name="Entrance">West</label>
-                                        <label class="btn btn-outline-primary" btnRadio=3 tabindex="0" role="button"
-                                            name="Entrance">South</label>
-                                        <label class="btn btn-outline-primary" btnRadio=4 tabindex="0" role="button"
-                                            name="Entrance">North</label>
+                                        <label class="btn btn-outline-primary" btnRadio="West" tabindex="0"
+                                            role="button" name="Entrance">West</label>
+                                        <label class="btn btn-outline-primary" btnRadio="South" tabindex="0"
+                                            role="button" name="Entrance">South</label>
+                                        <label class="btn btn-outline-primary" btnRadio="North" tabindex="0"
+                                            role="button" name="Entrance">North</label>
+                                    </div>
+                                    <div class="error-block" *ngIf="MainEntrace.invalid && nextClicked ">
+                                        Please select MainEntrance
                                     </div>
                                 </div>
 
@@ -221,6 +243,9 @@
                                     <label>Description</label>
                                     <textarea type="text" class="form-control" formControlName="Description"
                                         rows="6"></textarea>
+                                    <div class="error-block" *ngIf="Description.invalid && nextClicked">
+                                        Description field is required
+                                    </div>
                                 </div>
 
                                 <div class="form-group col-12">

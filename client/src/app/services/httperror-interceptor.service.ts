@@ -10,12 +10,9 @@ export class HttperrorInterceptorService implements HttpInterceptor {
 
   constructor(private toastr: ToastrService) { }
   intercept(request: HttpRequest<any>, next: HttpHandler) {
-    console.log("HTTP");
-
     return next.handle(request).pipe(
       catchError((error: HttpErrorResponse) => {
         const errorMessage = this.setError(error);
-        console.log(error);
         this.toastr.error(errorMessage);
         return throwError(errorMessage);
       })

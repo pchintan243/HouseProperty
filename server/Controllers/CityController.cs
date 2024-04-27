@@ -31,7 +31,7 @@ namespace server.Controllers
         public async Task<IActionResult> GetCities()
         {
             var listOfCities = await _uow.CityRepository.GetCitiesAsync();
-            return Ok(listOfCities.Select(x => x.Name));
+            return Ok(listOfCities);
         }
 
         /// <summary>

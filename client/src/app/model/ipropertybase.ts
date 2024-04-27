@@ -3,12 +3,15 @@ export interface IPropertyBase {
     sellRent: number;
     name: string;
     propertyType: string;
+    propertyTypeId: number;
     furnishingType: string;
+    furnishingTypeId: number;
     price: number;
     bhk: number;
     builtArea: number;
     city: string;
-    readyToMove: number;
+    cityId: number;
+    readyToMove: boolean;
     image?: string;
     estPossessionOn?: Date;
 }

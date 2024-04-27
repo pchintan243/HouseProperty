@@ -1,3 +1,4 @@
+using System.Reflection;
 using AutoMapper;
 using Microsoft.AspNetCore.Mvc;
 using server.Data;
@@ -24,24 +25,18 @@ namespace server.Controllers
         public async Task<IActionResult> GetProperties(int sellRent)
         {
             var ListOfProperties = await _uow.PropertyRepository.GetPropertiesAsync(sellRent);
-            var propertyList = _mapper.Map<IEnumerable<PropertyDto>>(ListOfProperties);
+            var propertyList = _mapper.Map<IEnumerable<PropertyListDto>>(ListOfProperties);
             return Ok(propertyList);
         }
 
         [HttpPost]
-        public async Task<IActionResult> AddProperty([FromBody] PropertyDto propertyDto)
+        public async Task<IActionResult> AddProperty(PropertyDto propertyDto)
         {
-            var data = new Property
-            {
-                SellRent = propertyDto.SellRent,
-                Name = propertyDto.Name,
-                Price = propertyDto.Price,
-                BHK = propertyDto.BHK,
-                BuiltArea = propertyDto.BuiltArea,
-                ReadyToMove = propertyDto.ReadyToMove
-            };
+            var data = _mapper.Map<Property>(propertyDto);
+            data.PostedBy = 1;
+            data.LastUpdatedBy = 1;
             _uow.PropertyRepository.AddProperty(data);
-            await _context.SaveChangesAsync();
+            await _uow.SaveAsync();
             return Ok(data);
         }
 

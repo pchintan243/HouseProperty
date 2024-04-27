@@ -52,7 +52,6 @@ export class UserRegisterComponent implements OnInit {
 		if (this.registrationForm.valid) {
 			this.authService.registerUser(this.userData()).subscribe((res) => {
 				this.registrationForm.reset();
-				console.log(res);
 				this.isSubmit = false;
 				this.toastr.success("User Registered successfully");
 				this.router.navigate(['/api/account/login']);

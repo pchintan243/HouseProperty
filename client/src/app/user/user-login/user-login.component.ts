@@ -15,7 +15,6 @@ export class UserLoginComponent {
   constructor(private authService: AuthService, private toastr: ToastrService, private router: Router) { }
 
   onLogin(loginForm: NgForm) {
-    console.log(loginForm.value);
     this.authService.authUser(loginForm.value).subscribe(
       (res: any) => {
         localStorage.setItem('Token', JSON.stringify(res.token));

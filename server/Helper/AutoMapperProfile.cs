@@ -12,7 +12,7 @@ namespace server.Helper
         public AutoMapperProfile()
         {
             CreateMap<City, CityDto>().ReverseMap();
-            CreateMap<Property, PropertyDto>()
+            CreateMap<Property, PropertyListDto>()
                 .ForMember(d => d.City, opt => opt.MapFrom(src => src.City.Name))
                 .ForMember(d => d.Country, opt => opt.MapFrom(src => src.City.Country))
                 .ForMember(d => d.PropertyType, opt => opt.MapFrom(src => src.PropertyType.Name))
@@ -32,6 +32,7 @@ namespace server.Helper
 
             CreateMap<PropertyType, PropertyTypeDto>().ReverseMap();
             CreateMap<FurnishingType, FurnishingTypeDto>().ReverseMap();
+            CreateMap<Property, PropertyDto>().ReverseMap();
         }
     }
 }

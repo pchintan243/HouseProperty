@@ -1,6 +1,6 @@
 namespace server.Dtos
 {
-    public class PropertyDetailDto : PropertyDto
+    public class PropertyDetailDto : PropertyListDto
     {
         public int Id { get; set; }
         public int CarpetArea { get; set; }

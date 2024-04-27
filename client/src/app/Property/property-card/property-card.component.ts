@@ -8,7 +8,7 @@ import { IPropertyBase } from 'src/app/model/ipropertybase';
 })
 export class PropertyCardComponent implements OnInit {
   ngOnInit(): void {
-    console.log(this.property);
+    // console.log(this.property);
 
   }
   @Input() property?: IPropertyBase;
