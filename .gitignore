@@ -7,3 +7,6 @@ bin/
 obj/
 .vscode/
 .config/dotnet-tools.json
+.env
+appsettings.development.json
+appsettings.json
