@@ -21,6 +21,13 @@ namespace server.Services
             _configuration = configuration;
         }
 
+        public async Task<DeletionResult> DeletePhotoAsync(string publicId)
+        {
+            var deleteParams = new DeletionParams(publicId);
+            var result = await cloudinary.DestroyAsync(deleteParams);
+            return result;
+        }
+
         public async Task<ImageUploadResult> UploadPhotoAsync(IFormFile photo)
         {
             var uploadResult = new ImageUploadResult();
