@@ -28,5 +28,5 @@ export class Property implements IPropertyBase {
     estPossessionOn?: Date;
     photo?: string;
     description?: string;
-    photos?: Photo[];
+    photos!: Photo[];
 }

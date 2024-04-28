@@ -119,7 +119,7 @@ namespace server.Controllers
             }
 
             if (await _uow.SaveAsync())
-                return Ok("Photo set as a primary");
+                return NoContent();
             return BadRequest("Failed to set photo as primary");
 
         }
