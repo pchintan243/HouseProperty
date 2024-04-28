@@ -19,7 +19,9 @@ namespace server.Helper
                 .ForMember(
                     d => d.FurnishingType,
                     opt => opt.MapFrom(src => src.FurnishingType.Name)
-                );
+                )
+                .ForMember(d => d.Photo, opt => opt.MapFrom(src => src.Photos
+                            .FirstOrDefault(x => x.IsPrimary).ImageUrl));
 
             CreateMap<Property, PropertyDetailDto>()
                 .ForMember(d => d.City, opt => opt.MapFrom(src => src.City.Name))

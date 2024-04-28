@@ -34,6 +34,7 @@ namespace server.Repositories
                 .Properties.Include(x => x.PropertyType)
                 .Include(x => x.City)
                 .Include(x => x.FurnishingType)
+                .Include(x => x.Photos)
                 .Where(x => x.SellRent == sellRent || x.Id == sellRent)
                 .ToListAsync();
 
