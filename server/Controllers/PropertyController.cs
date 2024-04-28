@@ -80,5 +80,49 @@ namespace server.Controllers
             var propertyDetail = _mapper.Map<PropertyDetailDto>(property);
             return Ok(propertyDetail);
         }
+
+        [HttpPost("{id}/{photoPublicId}")]
+        public async Task<IActionResult> SetPrimaryPhoto(int id, string photoPublicId)
+        {
+            var userId = GetUserId();
+
+            var property = await _uow.PropertyRepository.GetPropertyByIdAsync(id);
+
+            if (property == null)
+            {
+                return BadRequest("Property with given id does not exist");
+            }
+
+            if (property.PostedBy != userId)
+            {
+                return BadRequest("You are not authorized to change the photo");
+            }
+
+            var photo = property.Photos.FirstOrDefault(x => x.PublicId == photoPublicId);
+
+            if (photo == null)
+            {
+                return BadRequest("No such property or photo exists");
+            }
+
+            if (photo.IsPrimary)
+            {
+                return BadRequest("Photo is already set as primary");
+            }
+
+            var currentPrimary = property.Photos.FirstOrDefault(p => p.IsPrimary);
+
+            if (currentPrimary != null)
+            {
+                currentPrimary.IsPrimary = false;
+                photo.IsPrimary = true;
+            }
+
+            if (await _uow.SaveAsync())
+                return Ok("Photo set as a primary");
+            return BadRequest("Failed to set photo as primary");
+
+        }
+
     }
 }
