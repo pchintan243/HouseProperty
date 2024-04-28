@@ -105,4 +105,18 @@ export class HousingService {
 		};
 		return this.http.post('https://localhost:1002/api/Property/SetPrimaryPhoto/' + propertyId + '/' + propertyPhotoId, {}, httpOptions);
 	}
+
+	deletePhoto(propertyId: number, propertyPhotoId: string) {
+		let token = localStorage.getItem('token');
+		if (token) {
+			token = token.replace(/^"(.*)"$/, '$1');
+		}
+		const httpOptions = {
+			headers: new HttpHeaders({
+				Authorization: 'Bearer ' + token
+			})
+		};
+		return this.http.delete('https://localhost:1002/api/Property/DeletePhoto/' + propertyId + '/' + propertyPhotoId, httpOptions);
+	}
+
 }

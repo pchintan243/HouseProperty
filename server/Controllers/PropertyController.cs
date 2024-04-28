@@ -162,7 +162,7 @@ namespace server.Controllers
             property.Photos.Remove(photo);
 
             if (await _uow.SaveAsync())
-                return Ok("Photo Deleted successfully");
+                return Ok();
             return BadRequest("Failed to delete a photo");
 
         }

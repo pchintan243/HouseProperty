@@ -30,4 +30,14 @@ export class PhotoEditorComponent {
             this.toast.success("Main photo updated successfully");
         });
     }
+
+    
+    deletePhoto(propertyId: number, photo: Photo) {
+        this.housingService.deletePhoto(propertyId, photo.publicId).subscribe(() => {
+            this.property.photos = this.property.photos.filter(p => p.publicId !== photo.publicId);
+            this.toast.success("Photo deleted successfully");
+        });
+    }
+
+    
 }
