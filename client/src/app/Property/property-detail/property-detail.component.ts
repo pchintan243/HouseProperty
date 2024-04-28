@@ -12,6 +12,7 @@ import { HousingService } from 'src/app/services/housing.service';
 export class PropertyDetailComponent implements OnInit {
 
     public propertyId?: number;
+    public mainPhotoUrl: string = '';
     property = new Property();
     galleryOptions!: NgxGalleryOptions[];
     galleryImages!: NgxGalleryImage[];
@@ -25,6 +26,8 @@ export class PropertyDetailComponent implements OnInit {
         this.route.data.subscribe(
             (data) => {
                 this.property = data['prp'] as Property;
+                console.log(this.property.photos);
+
             }
         );
 
@@ -50,37 +53,24 @@ export class PropertyDetailComponent implements OnInit {
             }
         ];
 
-        this.galleryImages = [
-            {
-                small: 'assets/images/1-1.jpeg',
-                medium: 'assets/images/1-1.jpeg',
-                big: 'assets/images/1-1.jpeg'
-            },
-            {
-                small: 'assets/images/1-2.jpeg',
-                medium: 'assets/images/1-2.jpeg',
-                big: 'assets/images/1-2.jpeg'
-            },
-            {
-                small: 'assets/images/1-3.jpg',
-                medium: 'assets/images/1-3.jpg',
-                big: 'assets/images/1-3.jpg'
-            },
-            {
-                small: 'assets/images/1-4.jpg',
-                medium: 'assets/images/1-4.jpg',
-                big: 'assets/images/1-4.jpg'
-            },
-            {
-                small: 'assets/images/1-5.jpg',
-                medium: 'assets/images/1-5.jpg',
-                big: 'assets/images/1-5.jpg'
-            },
-            {
-                small: 'assets/images/1-2.jpeg',
-                medium: 'assets/images/1-2.jpeg',
-                big: 'assets/images/1-2.jpeg'
-            },
-        ];
+        this.galleryImages = this.getPropertyPhotos();
     }
+
+    getPropertyPhotos(): NgxGalleryImage[] {
+        const photoUrls: NgxGalleryImage[] = [];
+        for (const photo of this.property.photos ? this.property.photos : []) {
+            if (photo.isPrimary) {
+                this.mainPhotoUrl = photo.imageUrl;
+            }
+            else {
+                photoUrls.push({
+                    small: photo.imageUrl,
+                    medium: photo.imageUrl,
+                    big: photo.imageUrl
+                });
+            }
+        }
+        return photoUrls;
+    }
+
 }

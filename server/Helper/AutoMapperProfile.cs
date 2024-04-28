@@ -33,6 +33,8 @@ namespace server.Helper
             CreateMap<PropertyType, PropertyTypeDto>().ReverseMap();
             CreateMap<FurnishingType, FurnishingTypeDto>().ReverseMap();
             CreateMap<Property, PropertyDto>().ReverseMap();
+            CreateMap<Photo, PhotoDto>().ReverseMap();
+
         }
     }
 }

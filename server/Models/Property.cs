@@ -30,7 +30,7 @@ namespace server.Models
         public int Age { get; set; }
         public string Description { get; set; }
 
-        // public ICollection<Photo> Photos { get; set; }
+        public ICollection<Photo> Photos { get; set; }
         public DateTime PostedOn { get; set; } = DateTime.Now;
 
         [ForeignKey("User")]

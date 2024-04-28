@@ -46,8 +46,19 @@ namespace server.Repositories
                 .Properties.Include(x => x.PropertyType)
                 .Include(x => x.City)
                 .Include(x => x.FurnishingType)
+                .Include(x => x.Photos)
                 .Where(x => x.Id == id)
                 .FirstAsync();
+
+            return property;
+        }
+
+        public async Task<Property> GetPropertyByIdAsync(int id)
+        {
+            var property = await _context.Properties
+                .Include(x => x.Photos)
+                .Where(x => x.Id == id)
+                .FirstOrDefaultAsync();
 
             return property;
         }

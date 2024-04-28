@@ -6,6 +6,7 @@ using Microsoft.OpenApi.Models;
 using server.Data;
 using server.Helper;
 using server.Interfaces;
+using server.Services;
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -20,6 +21,7 @@ builder.Services.AddCors();
 builder.Services.AddAutoMapper(typeof(AutoMapperProfile).Assembly);
 
 builder.Services.AddScoped<IUnitOfWork, UnitOfWork>();
+builder.Services.AddScoped<IPhotoService, PhotoService>();
 
 
 var secretKey = builder.Configuration.GetSection("AppSettings:Key").Value;

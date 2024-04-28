@@ -14,19 +14,21 @@ namespace server.Controllers
         private readonly IUnitOfWork _uow;
         private readonly DataContext _context;
         private readonly IMapper _mapper;
+        private readonly IPhotoService _photoService;
 
-        public PropertyController(IUnitOfWork uow, DataContext context, IMapper mapper)
+        public PropertyController(IUnitOfWork uow, DataContext context, IMapper mapper, IPhotoService photoService)
         {
             _uow = uow;
             _context = context;
             _mapper = mapper;
+            _photoService = photoService;
         }
 
         [HttpGet("{sellRent}")]
         public async Task<IActionResult> GetProperties(int sellRent)
         {
             var ListOfProperties = await _uow.PropertyRepository.GetPropertiesAsync(sellRent);
-            var propertyList = _mapper.Map<IEnumerable<PropertyListDto>>(ListOfProperties);
+            var propertyList = _mapper.Map<IEnumerable<PropertyListDto>>(ListOfProperties).OrderByDescending(x => x.Id);
             return Ok(propertyList);
         }
 
@@ -41,6 +43,34 @@ namespace server.Controllers
             _uow.PropertyRepository.AddProperty(data);
             await _uow.SaveAsync();
             return Ok(data);
+        }
+        [HttpPost("{id}")]
+        public async Task<IActionResult> AddPropertyPhoto(IFormFile formFile, int id)
+        {
+            var property = await _uow.PropertyRepository.GetPropertyByIdAsync(id);
+
+            if (property == null)
+                return BadRequest("Property with given id does not exist");
+
+            var result = await _photoService.UploadPhotoAsync(formFile);
+            if (result.Error != null)
+            {
+                return BadRequest(result.Error.Message);
+            }
+
+            var photo = new Photo
+            {
+                ImageUrl = result.SecureUrl.AbsoluteUri,
+                PublicId = result.PublicId
+            };
+            if (property.Photos.Count == 0)
+            {
+                photo.IsPrimary = true;
+            }
+
+            property.Photos.Add(photo);
+            await _uow.SaveAsync();
+            return Ok("Photos added successfully");
         }
 
         [HttpGet("{id}")]
