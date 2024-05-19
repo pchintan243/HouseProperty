@@ -44,13 +44,15 @@ namespace server.Controllers
             await _uow.SaveAsync();
             return Ok(data);
         }
+
         [HttpPost("{id}")]
-        public async Task<IActionResult> AddPropertyPhoto(IFormFile formFile, int id)
+        public async Task<ActionResult<PhotoDto>> AddPropertyPhoto(IFormFile formFile, int id)
         {
+            var userId = GetUserId();
             var property = await _uow.PropertyRepository.GetPropertyByIdAsync(id);
 
-            if (property == null)
-                return BadRequest("Property with given id does not exist");
+            if (property.PostedBy != userId)
+                return BadRequest("You are not authorized to upload photo for this property.");
 
             var result = await _photoService.UploadPhotoAsync(formFile);
             if (result.Error != null)
@@ -70,7 +72,7 @@ namespace server.Controllers
 
             property.Photos.Add(photo);
             await _uow.SaveAsync();
-            return Ok("Photos added successfully");
+            return _mapper.Map<PhotoDto>(photo);            
         }
 
         [HttpGet("{id}")]

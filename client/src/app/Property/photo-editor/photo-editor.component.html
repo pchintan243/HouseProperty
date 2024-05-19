@@ -1,5 +1,5 @@
 <div class="row">
-    <div class="col-2" *ngFor="let photo of property.photos">
+    <div class="col-2 mb-3" *ngFor="let photo of property.photos">
         <img src="{{photo.imageUrl}}" alt="{{photo.imageUrl}}" class="img-thumbnail p-1">
         <div class="text-center">
             <button class="btn btn-sm" [disabled]="photo.isPrimary"
@@ -9,4 +9,18 @@
                 (click)="deletePhoto(property.id, photo)"><i class="fa fa-trash"></i></button>
         </div>
     </div>
+
+    <div>
+        <input type="file" (change)="onFileSelected($event)">
+        <button (click)="onUpload()" class="btn btn-primary">Upload</button>
+    </div>
+
+    <div *ngIf="!selectedFile">
+        No file choosen.
+    </div>
+
+    <div *ngIf="selectedFile">
+        <img [src]="selectedFileUrl" alt="Uploaded Image" class="preview-image">
+    </div>
+
 </div>

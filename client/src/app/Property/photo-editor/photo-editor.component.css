@@ -1,0 +1,12 @@
+.preview-image {
+    width: 250px;
+    height: 250px;
+    border: 2px dotted black;
+    padding: 10px;
+    border-radius: 12px;
+    margin: 10px;
+}
+
+input[type="file"] {
+    color: transparent;
+}
